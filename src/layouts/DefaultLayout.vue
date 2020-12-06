@@ -47,7 +47,7 @@ export default class DefaultLayout extends Vue {}
 
 #routerView {
   height: calc(100% - 184px);
-  padding: 46px;
+  // padding: 46px;
   margin: 44px;
   background: #FFF;
   border-radius: 8px;
