@@ -63,12 +63,13 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 
 import API from '@/services/API';
+import EventBus from '@/services/EventBus';
 
 @Component
 export default class ProductList extends Vue {
   private parentHeight = 0;
 
-  private currentPage = 2;
+  private currentPage = 1;
 
   private totalRows = 0;
 
@@ -87,10 +88,13 @@ export default class ProductList extends Vue {
 
   @Watch('sezon')
   public onSezonChange() {
+    this.currentPage = 1;
     this.loadProducts();
   }
 
   private mounted() {
+    this.setViewTitle();
+
     this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.fields = [
       { key: 'rodzaj_sprzetu', label: 'Nazwa' },
@@ -104,6 +108,10 @@ export default class ProductList extends Vue {
     this.loadProducts();
   }
 
+  private setViewTitle() {
+    return EventBus.$emit('layout-view-title', 'Katalog sprzętów do wypożyczenia');
+  }
+
   private async loadProducts() {
     try {
       const data = await new API('get', 'sprzet', {
@@ -113,6 +121,8 @@ export default class ProductList extends Vue {
           sezon: this.sezon,
         },
       }).call();
+
+      console.log('data', data);
 
       this.products = data.rows;
       this.totalRows = data.totalRows;

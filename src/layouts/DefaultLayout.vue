@@ -2,7 +2,7 @@
   <div id="defaultLayout">
     <SideBar/>
     <div id="view">
-      <div id="viewName">Lista sprzętów</div>
+      <div id="viewTitle">{{ viewTitle }}</div>
       <div id="routerView">
         <router-view/>
       </div>
@@ -15,12 +15,29 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import SideBar from '@/components/SideBar.vue';
 
+import EventBus from '@/services/EventBus';
+
 @Component({
   components: {
     SideBar,
   },
 })
-export default class DefaultLayout extends Vue {}
+export default class DefaultLayout extends Vue {
+  private viewTitle = '';
+
+  private mounted() {
+    EventBus.$on('layout-view-title', this.changeViewTitle);
+  }
+
+  private beforeDestroy() {
+    EventBus.$off('layout-view-title', this.changeViewTitle);
+  }
+
+  private changeViewTitle(viewTitle: string) {
+    console.log('test');
+    this.viewTitle = viewTitle;
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -35,7 +52,7 @@ export default class DefaultLayout extends Vue {}
   height: 100%;
 }
 
-#viewName {
+#viewTitle {
   margin-top: 56px;
   margin-left: 44px;
   font-size: 40px;
