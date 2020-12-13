@@ -34,7 +34,6 @@ export default class DefaultLayout extends Vue {
   }
 
   private changeViewTitle(viewTitle: string) {
-    console.log('test');
     this.viewTitle = viewTitle;
   }
 }

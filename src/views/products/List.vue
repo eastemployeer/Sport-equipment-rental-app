@@ -108,8 +108,8 @@ export default class ProductList extends Vue {
     this.loadProducts();
   }
 
-  private setViewTitle() {
-    return EventBus.$emit('layout-view-title', 'Katalog sprzętów do wypożyczenia');
+  private async setViewTitle() {
+    await EventBus.$emit('layout-view-title', 'Katalog sprzętów do wypożyczenia');
   }
 
   private async loadProducts() {
