@@ -18,7 +18,7 @@ class API {
     this.options = options;
   }
 
-  public async call() {
+  public async call(getStatus = false) {
     const config = {
       method: this.method,
       url: `http://localhost:3000/${this.url}?${new URLSearchParams(this.options.query)}`,
@@ -29,6 +29,9 @@ class API {
     };
 
     const response = await Axios(config);
+
+    if (getStatus) return { data: response.data, status: response.status };
+
     return response.data;
   }
 }

@@ -122,8 +122,6 @@ export default class ProductList extends Vue {
         },
       }).call();
 
-      console.log('data', data);
-
       this.products = data.rows;
       this.totalRows = data.totalRows;
       this.isLoading = false;

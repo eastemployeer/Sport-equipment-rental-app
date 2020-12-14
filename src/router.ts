@@ -1,35 +1,37 @@
 import Vue from 'vue';
-import Router, { Route } from 'vue-router';
+import Router from 'vue-router';
 
 import store from '@/store';
+import Login from '@/views/auth/Login.vue';
 import ProductList from '@/views/products/List.vue';
-
-const ifNotAuthenticated = (to: Route, from: Route, next: (route?: any) => void) => {
-  if (!store.getters.isAuthenticated) {
-    next();
-    return;
-  }
-  next({ name: 'home' });
-};
-
-const ifAuthenticated = (to: Route, from: Route, next: (route?: any) => void) => {
-  if (store.getters.isAuthenticated) {
-    next();
-    return;
-  }
-  next('/');
-};
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'Home',
+      path: '/login',
+      name: 'Login',
+      component: Login,
+    },
+    {
+      path: '/product',
+      name: 'ProductList',
       component: ProductList,
     },
   ],
 });
+
+router.beforeEach((to, _from, next) => {
+  if (!store.state.auth.token && to.name !== 'Login') {
+    next({ name: 'Login' });
+  } else if (store.state.auth.token && to.name === 'Login') {
+    next({ name: 'ProductList' });
+  } else {
+    next();
+  }
+});
+
+export default router;

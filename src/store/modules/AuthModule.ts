@@ -2,26 +2,33 @@ import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
 
-import { User } from '@/models/User';
-import { AuthService, LoginResponse } from '@/services/AuthService';
+import { AccountType, User } from '@/models/User';
+import {
+  AuthService, LoginKlientRequest, LoginPracownikRequest, LoginResponse,
+} from '@/services/AuthService';
+
+export enum AuthAction {
+  AttemptLoginKlient = 'attemptLoginKlient',
+  AttemptLoginPracownik = 'attemptLoginPracownik',
+  Logout = 'logout',
+}
 
 export interface AuthState {
-    token: string;
-    currentUser: User | null;
+  token: string | null;
+  currentUser: User | null;
+  accountType: AccountType | null;
 }
 
 @Module
 export default class AuthModule extends VuexModule<AuthState> {
-    public token = '';
+    public token: string | null = null;
 
     public currentUser: User | null = null;
 
-    get isAuthenticated(): boolean {
-      return this.user !== null && !!this.token;
-    }
+    public accountType: AccountType | null = null;
 
-    get user(): User | null {
-      return this.currentUser;
+    get isAuthenticated(): boolean {
+      return !!this.token;
     }
 
     @Mutation
@@ -32,20 +39,33 @@ export default class AuthModule extends VuexModule<AuthState> {
 
     @Mutation
     private handleLogout() {
-      this.token = '';
+      this.token = null;
       this.currentUser = null;
     }
 
     @Action({ rawError: true })
-    private async attemptLogin(data: any) {
-      const response = await AuthService.login(data);
-      if (response.status === 200) {
-        this.context.commit('handleLogin', response.data);
+    private async [AuthAction.AttemptLoginKlient](data: LoginKlientRequest) {
+      try {
+        const response = await AuthService.loginKlient(data);
+        console.log('data', data);
+        if (response.status === 202) {
+          this.context.commit('handleLogin', response);
+        }
+      } catch (error) {
+        console.log('error', error);
       }
     }
 
     @Action({ rawError: true })
-    private logout() {
+    private async [AuthAction.AttemptLoginPracownik](data: LoginPracownikRequest) {
+      const response = await AuthService.loginPracownik(data);
+      if (response.status === 202) {
+        this.context.commit('handleLogin', response);
+      }
+    }
+
+    @Action({ rawError: true })
+    private [AuthAction.Logout]() {
       this.context.commit('handleLogout');
     }
 }
