@@ -1,5 +1,5 @@
 <template>
-  <div class="view">
+  <div class="authView">
     <div class="container">
       <div :style="{ display: 'flex', flexDirection: 'column', alignItems: 'center' }">
         <span class="infoMain">Wypożyczalnia</span>
@@ -47,7 +47,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import Input from '@/components/Input.vue';
 
-import VuexState from '@/store';
+import store from '@/store';
 import { AuthAction } from '@/store/modules/AuthModule';
 
 @Component({
@@ -69,7 +69,7 @@ export default class Login extends Vue {
         password: this.password,
       };
 
-      VuexState.dispatch(AuthAction.AttemptLoginPracownik, data).then(() => {
+      store.dispatch(AuthAction.AttemptLoginPracownik, data).then(() => {
         this.$router.push({ name: 'ProductList' });
       });
     } else {
@@ -78,7 +78,7 @@ export default class Login extends Vue {
         password: this.password,
       };
 
-      VuexState.dispatch(AuthAction.AttemptLoginKlient, data).then(() => {
+      store.dispatch(AuthAction.AttemptLoginKlient, data).then(() => {
         this.$router.push({ name: 'ProductList' });
       });
     }

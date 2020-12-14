@@ -70,4 +70,3 @@ export default class DefaultLayout extends Vue {
   box-shadow: 0 12px 26px rgba(16, 30, 115, 0.06)
 }
 </style>
-56+40+44+44

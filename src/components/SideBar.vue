@@ -34,10 +34,15 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import store from '@/store';
+import { AuthAction } from '@/store/modules/AuthModule';
+
 @Component
 export default class NavBar extends Vue {
   private logout() {
-    console.log('logout');
+    store.dispatch(AuthAction.Logout).then(() => {
+      this.$router.replace({ name: 'Login' });
+    });
   }
 }
 </script>

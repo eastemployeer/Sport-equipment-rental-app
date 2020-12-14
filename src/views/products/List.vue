@@ -64,6 +64,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
+import store from '@/store';
 
 @Component
 export default class ProductList extends Vue {
@@ -94,6 +95,8 @@ export default class ProductList extends Vue {
 
   private mounted() {
     this.setViewTitle();
+
+    console.log('store.state.auth.accountType', store.state.auth.accountType);
 
     this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.fields = [

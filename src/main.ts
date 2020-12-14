@@ -1,6 +1,7 @@
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import Vue from 'vue';
 
+import AuthLayout from '@/layouts/AuthLayout.vue';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 
 import App from './App.vue';
@@ -13,6 +14,7 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
 // Layout-init
+Vue.component('auth-layout', AuthLayout);
 Vue.component('default-layout', DefaultLayout);
 
 Vue.config.productionTip = false;

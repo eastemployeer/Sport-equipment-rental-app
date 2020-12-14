@@ -35,19 +35,20 @@ export default class AuthModule extends VuexModule<AuthState> {
     private handleLogin(data: LoginResponse) {
       this.token = data.token;
       this.currentUser = data.user;
+      this.accountType = data.accountType;
     }
 
     @Mutation
     private handleLogout() {
       this.token = null;
       this.currentUser = null;
+      this.accountType = null;
     }
 
     @Action({ rawError: true })
     private async [AuthAction.AttemptLoginKlient](data: LoginKlientRequest) {
       try {
         const response = await AuthService.loginKlient(data);
-        console.log('data', data);
         if (response.status === 202) {
           this.context.commit('handleLogin', response);
         }
