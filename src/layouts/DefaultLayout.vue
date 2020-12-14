@@ -25,7 +25,7 @@ import EventBus from '@/services/EventBus';
 export default class DefaultLayout extends Vue {
   private viewTitle = '';
 
-  private mounted() {
+  private created() {
     EventBus.$on('layout-view-title', this.changeViewTitle);
   }
 
