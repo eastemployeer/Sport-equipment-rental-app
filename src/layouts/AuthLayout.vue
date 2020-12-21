@@ -7,24 +7,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import EventBus from '@/services/EventBus';
-
 @Component
-export default class AuthLayout extends Vue {
-  private viewTitle = '';
-
-  private created() {
-    EventBus.$on('layout-view-title', this.changeViewTitle);
-  }
-
-  private beforeDestroy() {
-    EventBus.$off('layout-view-title', this.changeViewTitle);
-  }
-
-  private changeViewTitle(viewTitle: string) {
-    this.viewTitle = viewTitle;
-  }
-}
+export default class AuthLayout extends Vue {}
 </script>
 
 <style scoped lang="scss">
