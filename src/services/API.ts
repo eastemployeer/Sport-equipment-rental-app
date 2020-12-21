@@ -6,13 +6,13 @@ interface Options {
 }
 
 class API {
-  private method: 'get' | 'post';
+  private method: 'get' | 'post' | 'delete';
 
   private url: string;
 
   private options: Options;
 
-  constructor(method: 'get' | 'post', url: string, options: Options) {
+  constructor(method: 'get' | 'post' | 'delete', url: string, options: Options) {
     this.method = method;
     this.url = url;
     this.options = options;
@@ -28,7 +28,13 @@ class API {
       data: this.options.body,
     };
 
-    const response = await Axios(config);
+    let response;
+
+    try {
+      response = await Axios(config);
+    } catch (error) {
+      return { status: error.response.status };
+    }
 
     if (getStatus) return { data: response.data, status: response.status };
 

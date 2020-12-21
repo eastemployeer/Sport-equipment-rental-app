@@ -10,8 +10,18 @@
           <span class="textInfoLabel">Cena za dzień</span>
           <span class="textInfoValue">{{ product.cena_wypozyczenia_dzien + ' zł'}}</span>
         </div>
+        <div v-if="accountType !== 'KLIENT'" :style="{ marginBottom: '51px' }">
+          <div class="textInfoContainer" :style="{ marginTop: '23px' }">
+            <span class="textInfoLabel">Wartość sprzętu</span>
+            <span class="textInfoValue">{{ product.wartosc_sprzetu + ' zł'}}</span>
+          </div>
+          <div class="textInfoContainer" :style="{ marginTop: '23px' }">
+            <span class="textInfoLabel">Ilość wypożyczeń</span>
+            <span class="textInfoValue">{{ '???'}}</span>
+          </div>
+        </div>
       </div>
-      <div class='column' :style="{ flex: 3 }">
+      <div class='column'>
         <div class="textInfoContainer">
           <span class="textInfoLabel">Rodzaj sprzętu</span>
           <span class="textInfoValue">{{ product.rodzaj_sprzetu }}</span>
@@ -20,35 +30,74 @@
           <span class="textInfoLabel">Rocznik</span>
           <span class="textInfoValue">{{ product.rocznik }}</span>
         </div>
+        <div v-if="accountType !== 'KLIENT'" :style="{ marginBottom: '51px' }">
+          <div class="textInfoContainer" :style="{ marginTop: '23px' }">
+            <span class="textInfoLabel">Id sprzętu</span>
+            <span class="textInfoValue">{{ product.id }}</span>
+          </div>
+          <div class="textInfoContainer" :style="{ marginTop: '23px' }">
+            <span class="textInfoLabel">Ilość napraw</span>
+            <span class="textInfoValue">{{ '???'}}</span>
+          </div>
+        </div>
+      </div>
+      <div v-if="accountType === 'KIEROWNIK'">
+        <b-button
+          v-on:click='editProduct'
+          variant="primary"
+        >Edytuj sprzęt</b-button>
+        <b-button
+          v-on:click='removeProduct'
+          variant="danger"
+          :style="{ marginLeft: '25px' }"
+        >Usuń sprzęt</b-button>
+      </div>
+      <div v-if="accountType === 'SERWISANT'">
+        <b-button
+          v-on:click='serviceProduct'
+          variant="primary"
+        >Serwisuj</b-button>
+        <b-button
+          v-on:click='blockProduct'
+          variant="danger"
+          :style="{ marginLeft: '25px' }"
+        >Zablokuj</b-button>
       </div>
     </div>
-  <div class="button">
-    <b-button
-        v-on:click='addToCart'
-        variant="primary"
-        :style="{ marginTop: '5px' }"
-      >Dodaj do koszyka</b-button>
-  </div>
-  <div>
-    <b-table hover head-variant="light"
-      id="table"
-      :fields="fields"
-      :items="cechy"
-    >
-      <template #table-busy>
-        <div class="text-center text-danger">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Ładowanie...</strong>
-        </div>
-      </template>
-    </b-table>
-  </div>
+    <div class="button" v-if="accountType === 'KLIENT'">
+      <b-button
+          v-on:click='addToCart'
+          variant="primary"
+          :style="{ marginTop: '5px' }"
+        >Dodaj do koszyka</b-button>
+    </div>
+    <div class="infoSegment">
+      <b-table
+        hover
+        head-variant="light"
+        id="table"
+        :fields="fields"
+        :items="cechy"
+      >
+        <template #table-busy>
+          <div class="text-center text-danger">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong>Ładowanie...</strong>
+          </div>
+        </template>
+      </b-table>
+      <div class="textInfoContainer column" :style="{ marginLeft: '46px' }">
+        <span class="textInfoLabel">Opis napraw</span>
+        <span class="textInfoValue">{{ "opis bla bla bla bla " }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import { AccountType } from '@/models/User';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import store from '@/store';
@@ -61,7 +110,10 @@ export default class ProductDetails extends Vue {
 
   private fields: any = [];
 
+  private accountType: AccountType | null = null;
+
   private mounted() {
+    this.accountType = store.state.auth.accountType;
     this.fields = [
       { key: 'cechaLabel', label: 'Nazwa cechy' },
       { key: 'cechaValue', label: 'Wartość' },
@@ -74,10 +126,64 @@ export default class ProductDetails extends Vue {
     // TODO: after create cart
   }
 
+  private editProduct() {
+    this.$router.push({ name: 'ProductEdit', params: { id: this.product.id } });
+  }
+
+  private async removeProduct() {
+    try {
+      const data = await new API('delete', `sprzet/${this.product.id}`, {}).call(true);
+
+      if (data.status === 201) {
+        this.$router.back();
+      } else {
+        // eslint-disable-next-line no-alert
+        alert('Usuwanie nie powiodło się');
+      }
+    } catch (error) {
+      console.error('error', error);
+    }
+  }
+
+  private serviceProduct() {
+    this.$router.push({ name: 'ProductService', params: { id: this.product.id } });
+  }
+
+  private async blockProduct() {
+    try {
+      const data = await new API('post', `sprzet/${this.product.id}`, {
+        body: {
+          rodzajSprzetu: this.product.rodzaj_sprzetu,
+          przeznaczenie: this.product.przeznaczenie,
+          cecha_1_label: this.product.cecha_1_label,
+          cecha_1_value: this.product.cecha_1_value,
+          cecha_2_label: this.product.cecha_2_label,
+          cecha_2_value: this.product.cecha_2_value,
+          cecha_3_label: this.product.cecha_3_label,
+          cecha_3_value: this.product.cecha_3_value,
+          cecha_4_label: this.product.cecha_4_label,
+          cecha_4_value: this.product.cecha_4_value,
+          cena: this.product.cena_wypozyczenia_dzien,
+          rocznik: this.product.rocznik,
+          wartoscSprzetu: this.product.wartosc_sprzetu,
+          blokada: 'Serwis',
+        },
+      }).call(true);
+
+      if (data.status === 201) {
+        this.loadProduct();
+      } else {
+        // eslint-disable-next-line no-alert
+        alert('Blokowanie nie powiodło się');
+      }
+    } catch (error) {
+      console.error('error', error);
+    }
+  }
+
   private async loadProduct(id: any) {
     try {
       const data = await new API('get', `sprzet/${id}`, {}).call();
-      console.log('data', data);
 
       this.product = data;
       this.cechy = [
@@ -134,8 +240,8 @@ export default class ProductDetails extends Vue {
 
 .column {
   display: flex;
-  flex: 1;
   flex-direction: column;
+  width: 350px;
 }
 
 .button {
