@@ -96,8 +96,6 @@ export default class ProductList extends Vue {
   private mounted() {
     this.setViewTitle();
 
-    console.log('store.state.auth.accountType', store.state.auth.accountType);
-
     this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.fields = [
       { key: 'rodzaj_sprzetu', label: 'Nazwa' },
@@ -112,25 +110,73 @@ export default class ProductList extends Vue {
   }
 
   private async setViewTitle() {
-    await EventBus.$emit('layout-view-title', 'Katalog sprzętów do wypożyczenia');
+    console.log('store.state.auth.accountType', store.state.auth.accountType);
+    if (store.state.auth.accountType === 'KLIENT') {
+      await EventBus.$emit('layout-view', { title: 'Katalog sprzętów do wypożyczenia' });
+    } else if (store.state.auth.accountType === 'KIEROWNIK') {
+      await EventBus.$emit('layout-view', {
+        title: 'Katalog sprzętów',
+        show: true,
+        text: 'Dodaj nowy sprzęt',
+        onPress: () => this.$router.push({ name: 'product-add' }),
+      });
+    } else if (store.state.auth.accountType === 'SERWISANT') {
+      await EventBus.$emit('layout-view', { title: 'Katalog sprzętów wymagających przeglądu' });
+    }
   }
 
   private async loadProducts() {
-    try {
-      const data = await new API('get', 'sprzet', {
-        query: {
-          limit: 30,
-          offset: (this.currentPage - 1) * 30,
-          sezon: this.sezon,
-        },
-      }).call();
+    if (store.state.auth.accountType === 'KLIENT') {
+      try {
+        const data = await new API('get', 'sprzet', {
+          query: {
+            limit: 30,
+            offset: (this.currentPage - 1) * 30,
+            sezon: this.sezon,
+            blokada: 'dostepny',
+          },
+        }).call();
 
-      this.products = data.rows;
-      console.log(this.products);
-      this.totalRows = data.totalRows;
-      this.isLoading = false;
-    } catch (error) {
-      console.error('error', error);
+        this.products = data.rows;
+        this.totalRows = data.totalRows;
+        this.isLoading = false;
+      } catch (error) {
+        console.error('error', error);
+      }
+    } else if (store.state.auth.accountType === 'SERWISANT') {
+      try {
+        const data = await new API('get', 'sprzet', {
+          query: {
+            limit: 30,
+            offset: (this.currentPage - 1) * 30,
+            sezon: this.sezon,
+          },
+        }).call();
+
+        // TODO!!!!!!
+
+        this.products = data.rows;
+        this.totalRows = data.totalRows;
+        this.isLoading = false;
+      } catch (error) {
+        console.error('error', error);
+      }
+    } else if (store.state.auth.accountType === 'KIEROWNIK') {
+      try {
+        const data = await new API('get', 'sprzet', {
+          query: {
+            limit: 30,
+            offset: (this.currentPage - 1) * 30,
+            sezon: this.sezon,
+          },
+        }).call();
+
+        this.products = data.rows;
+        this.totalRows = data.totalRows;
+        this.isLoading = false;
+      } catch (error) {
+        console.error('error', error);
+      }
     }
   }
 }
