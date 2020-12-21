@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import store from '@/store';
 import Login from '@/views/auth/Login.vue';
 import MyCart from '@/views/clients/MyCart.vue';
+import ProductDetails from '@/views/products/Details.vue';
 import ProductList from '@/views/products/List.vue';
 
 Vue.use(Router);
@@ -24,6 +25,11 @@ const router = new Router({
       path: '/product',
       name: 'ProductList',
       component: ProductList,
+    },
+    {
+      path: '/product/:id',
+      name: 'ProductDetails',
+      component: ProductDetails,
     },
     {
       path: '/cart',
