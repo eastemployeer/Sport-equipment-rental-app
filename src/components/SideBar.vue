@@ -1,17 +1,56 @@
 <template>
   <div class="sidebar">
-    <span class="panelName">Panel klienta</span>
-    <span class="userName">userName</span>
-    <span class="userEmail">userEmail</span>
+    <span class="panelName">{{panelName}}</span>
+    <span class="userName">{{userName}}</span>
+    <span class="userEmail">{{userEmail}}</span>
     <div class="divider"/>
 
-    <div class="buttons">
-      <div class="button">
+     <div v-on:click='makeAction' class="buttons">
+      <div class="button btn1">
         <div class="buttonIcon">
-          <b-icon-list-ul/>
+           <component :is="btnIcon[0]"/>
+
         </div>
         <div class="buttonText">
-          Lista sprzętów
+          {{button1Text}}
+        </div>
+      </div>
+
+      <div class="divider"/>
+
+      <div v-if="panelName != 'Panel pracownika'" class="button btn2">
+        <div class="buttonIcon">
+           <component :is="btnIcon[1]"/>
+        </div>
+        <div class="buttonText">
+          {{button2Text}}
+        </div>
+      </div>
+
+      <div v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button btn3">
+        <div class="buttonIcon">
+           <component :is="btnIcon[2]"/>
+        </div>
+        <div class="buttonText">
+          {{button3Text}}
+        </div>
+      </div>
+
+      <div v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button btn4">
+        <div class="buttonIcon">
+           <component :is="btnIcon[3]"/>
+        </div>
+        <div class="buttonText">
+          {{button4Text}}
+        </div>
+      </div>
+
+      <div v-if="panelName === 'Panel klienta'" class="button btn5">
+        <div class="buttonIcon">
+           <component :is="btnIcon[4]"/>
+        </div>
+        <div class="buttonText">
+          {{button5Text}}
         </div>
       </div>
 
@@ -38,11 +77,93 @@ import store from '@/store';
 import { AuthAction } from '@/store/modules/AuthModule';
 
 @Component
-export default class NavBar extends Vue {
+export default class SideBar extends Vue {
+  // docelowo wynik zapytania
+ private userName = 'Adam Kowalski';
+
+  private userEmail = '';
+
+  private panelName = 'Panel klienta';
+
+  private button1Text = '';
+
+  private button2Text ='';
+
+  private button3Text= '';
+
+  private button4Text = '';
+
+  private button5Text = '';
+
+  private btnIcon : string[] = [];
+
   private logout() {
     store.dispatch(AuthAction.Logout).then(() => {
       this.$router.replace({ name: 'Login' });
     });
+  }
+
+  private makeAction() {
+    if (this.panelName === 'Panel klienta') {
+      this.$router.push({ name: 'MyCart' });
+    }
+  }
+
+  private buttonsConfiguration() {
+    // const DOMiconBtn1 = document.querySelector('.btn1-icon');
+
+    if (this.panelName === 'Panel klienta') {
+      this.button1Text = 'Mój koszyk';
+      this.button2Text = 'Katalog sprzętów';
+      this.button3Text = 'Lista usług serwisowych';
+      this.button4Text = 'Serwisy moich sprzętów';
+      this.button5Text = 'Moje wypożyczenia';
+
+      this.btnIcon[0] = 'b-icon-cart3';
+      this.btnIcon[1] = 'b-icon-book';
+      this.btnIcon[2] = 'b-icon-list';
+      this.btnIcon[3] = 'b-icon-tools';
+      this.btnIcon[4] = 'b-icon-archive';
+    } else if (this.panelName === 'Panel kierownika') {
+      this.button1Text = 'Katalog sprzętów';
+      this.button2Text = 'Lista pracowników';
+      this.button3Text = 'Lista wypożyczeń';
+      this.button4Text = 'Statystyki wypozyczalni';
+
+      this.btnIcon[0] = 'b-icon-book';
+      this.btnIcon[1] = 'b-icon-person-circle';
+      this.btnIcon[2] = 'b-icon-list';
+      this.btnIcon[3] = 'b-icon-graph-up';
+    } else if (this.panelName === 'Panel pracownika') {
+      this.button1Text = 'Lista wypożyczeń';
+
+      this.btnIcon[0] = 'b-icon-list';
+    } else if (this.panelName === 'Panel serwisanta') {
+      this.button1Text = 'Katalog sprzętów';
+      this.button2Text = 'Lista serwisów sprzętów klientów';
+
+      this.btnIcon[0] = 'b-icon-book';
+      this.btnIcon[1] = 'b-icon-list';
+    }
+  }
+
+  private mounted() {
+    if (store.state.auth.accountType === 'PRACOWNIK') {
+      this.panelName = 'Panel pracownika';
+    } else if (store.state.auth.accountType === 'KLIENT') {
+      this.panelName = 'Panel klienta';
+    } else if (store.state.auth.accountType === 'KIEROWNIK') {
+      this.panelName = 'Panel kierownika';
+    } else if (store.state.auth.accountType === 'SERWISANT') {
+      this.panelName = 'Panel serwisanta';
+    }
+
+    this.userName = `${store.state.auth.currentUser?.imie} ${store.state.auth.currentUser?.nazwisko}`;
+    if (store.state.auth.accountType === 'KLIENT') {
+      this.userEmail = `${store.state.auth.currentUser?.email}`;
+    }
+
+    this.buttonsConfiguration();
   }
 }
 </script>
@@ -88,6 +209,8 @@ export default class NavBar extends Vue {
 }
 
 .buttons {
+  display: flex;
+flex-direction: column;
   margin-top: 14px;
 }
 

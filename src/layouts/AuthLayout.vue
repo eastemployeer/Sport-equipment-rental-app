@@ -7,15 +7,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import SideBar from '@/components/SideBar.vue';
-
 import EventBus from '@/services/EventBus';
 
-@Component({
-  components: {
-    SideBar,
-  },
-})
+@Component
 export default class AuthLayout extends Vue {
   private viewTitle = '';
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="view list text-center" ref="table">
+<div class="view list text-center" ref="table">
     <div class="list-table">
       <b-table sticky-header hover head-variant="light"
         id="my-table"
@@ -34,69 +34,36 @@
           {{ data.item.cecha_4_label ? data.item.cecha_4_label + ": " + data.item.cecha_4_value : "" }}
         </template>
 
-        <template #cell(id)="data">
-          <router-link :to="{ name: 'product-details', params: { id: data.value.id } }">
-            <b-icon-arrow-right scale="1.5"/>
-          </router-link>
+        <template #cell(id)>
+         <!-- router -->
+            <b-icon-trash  variant="danger" scale="1.5"/>
         </template>
       </b-table>
-      <div class="buttons">
-        <b-dropdown id="dropdown-1" :text="'Sezon ' + sezon">
-          <b-dropdown-item v-on:click="sezon = 'zimowy'">Sezon ziomowy</b-dropdown-item>
-          <b-dropdown-item v-on:click="sezon = 'letni'">Sezon letni</b-dropdown-item>
-        </b-dropdown>
-        <div :style="{ flex: 1 }">
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="30"
-            align="center"
-            last-number
-          />
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+<script lang='ts'>
+import { Component, Vue } from 'vue-property-decorator';
 
-import API from '@/services/API';
 import EventBus from '@/services/EventBus';
-import store from '@/store';
 
 @Component
-export default class ProductList extends Vue {
-  private parentHeight = 0;
+export default class MyCart extends Vue {
+   private parentHeight = 0;
 
   private currentPage = 1;
 
   private totalRows = 0;
 
-  private sezon = 'zimowy';
-
-  private isLoading = true;
+  private isLoading = false;
 
   private products: any[] = [];
 
   private fields: any[] = [];
 
-  @Watch('currentPage')
-  public onCurrentPageChange() {
-    this.loadProducts();
-  }
-
-  @Watch('sezon')
-  public onSezonChange() {
-    this.currentPage = 1;
-    this.loadProducts();
-  }
-
   private mounted() {
     this.setViewTitle();
-
-    console.log('store.state.auth.accountType', store.state.auth.accountType);
 
     this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.fields = [
@@ -111,32 +78,30 @@ export default class ProductList extends Vue {
     this.loadProducts();
   }
 
-  private async setViewTitle() {
-    await EventBus.$emit('layout-view-title', 'Katalog sprzętów do wypożyczenia');
+  private loadProducts() {
+    this.products = [{
+      rodzaj_sprzetu: 'buty narciarskie',
+      cena_wypozyczenia_dzien: '100',
+      cecha_1_label: 'rozmiar',
+      cecha_1_value: 'S',
+      cecha_2_label: 'marka',
+      cecha_2_value: 'salomon',
+      cecha_3_label: 'kolor',
+      cecha_3_value: 'czerwony',
+      cecha_4_label: 'poziom zaawansowania',
+      cecha_4_value: 'ekspert',
+      id: 22,
+    },
+    ];
   }
 
-  private async loadProducts() {
-    try {
-      const data = await new API('get', 'sprzet', {
-        query: {
-          limit: 30,
-          offset: (this.currentPage - 1) * 30,
-          sezon: this.sezon,
-        },
-      }).call();
-
-      this.products = data.rows;
-      console.log(this.products);
-      this.totalRows = data.totalRows;
-      this.isLoading = false;
-    } catch (error) {
-      console.error('error', error);
-    }
+  private async setViewTitle() {
+    await EventBus.$emit('layout-view-title', 'Twój koszyk');
   }
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .buttons {
   display: flex;
   flex-direction: row;
