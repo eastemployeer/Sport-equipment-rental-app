@@ -46,11 +46,11 @@
     "html"
   ],
   "vetur.format.enable": false,
-  "vetur.completion.scaffoldSnippetSources": {
-    "user": "🗒️",
-    "workspace": "💼",
-    "vetur": ""
-  },
+  // "vetur.completion.scaffoldSnippetSources": {
+  //   "user": "🗒️",
+  //   "workspace": "💼",
+  //   "vetur": ""
+  // },
 
   // ===
   // HTML
