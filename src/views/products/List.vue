@@ -2,7 +2,6 @@
   <div class="view list text-center" ref="table">
     <div class="list-table">
       <b-table sticky-header hover head-variant="light"
-        id="my-table"
         :style="{ maxHeight: parentHeight - 16 - 38 + 'px' }"
         :fields="fields"
         :items="products"
@@ -35,7 +34,7 @@
         </template>
 
         <template #cell(id)="data">
-          <router-link :to="{ name: 'product-details', params: { id: data.value.id } }">
+          <router-link :to="{ name: 'ProductDetails', params: { id: data.item.id } }">
             <b-icon-arrow-right scale="1.5"/>
           </router-link>
         </template>
@@ -110,7 +109,6 @@ export default class ProductList extends Vue {
   }
 
   private async setViewTitle() {
-    console.log('store.state.auth.accountType', store.state.auth.accountType);
     if (store.state.auth.accountType === 'KLIENT') {
       await EventBus.$emit('layout-view', { title: 'Katalog sprzętów do wypożyczenia' });
     } else if (store.state.auth.accountType === 'KIEROWNIK') {
