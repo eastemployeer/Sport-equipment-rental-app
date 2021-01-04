@@ -23,17 +23,20 @@
       </div>
 
       <span
-        class="changeTypeBtn"
+        class="subBtn"
         v-if="loginType === 'KLIENT'"
         v-on:click="loginType = 'PRACOWNIK'"
       >Kliknij tu by zalogować się jako pracownik</span>
       <span
-        class="changeTypeBtn"
+        class="subBtn"
         v-else
         v-on:click="loginType = 'KLIENT'"
       >Kliknij tu by zalogować się jako klient</span>
-      <router-link :to="{name: 'Register'}"  class="changeTypeBtn">
-        Kliknij tu by się zarejestrować</router-link>
+      <router-link
+        :to="{name: 'Register'}"
+        class="subBtn"
+        :style="{ marginTop: '5px' }"
+      >Kliknij tu by się zarejestrować</router-link>
 
       <b-button
         v-on:click='login'
@@ -112,11 +115,12 @@ export default class Login extends Vue {
   letter-spacing: 0.2px;
 }
 
-.changeTypeBtn {
+.subBtn {
   align-self: center;
   margin-top: 50px;
   font-size: 13px;
   color: gray;
   text-decoration: underline;
+  cursor: pointer;
 }
 </style>
