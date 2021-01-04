@@ -64,12 +64,21 @@
         >Zablokuj</b-button>
       </div>
     </div>
-    <div class="button" v-if="accountType === 'KLIENT'">
+    <div
+      class="button"
+      v-if="accountType === 'KLIENT'"
+      :style="{ marginTop: '5px' }"
+    >
       <b-button
-          v-on:click='addToCart'
-          variant="primary"
-          :style="{ marginTop: '5px' }"
-        >Dodaj do koszyka</b-button>
+        v-if="!isProductInCart"
+        v-on:click='addToCart'
+        variant="primary"
+      >Dodaj do koszyka</b-button>
+      <b-button
+        v-else
+        disabled
+        variant="outline-secondary"
+      >Produkt jest już w koszyku</b-button>
     </div>
     <div class="infoSegment">
       <b-table
@@ -101,7 +110,7 @@ import { AccountType } from '@/models/User';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import store from '@/store';
-import CartModule from '@/store/modules/CartModule';
+import CartModule, { CartAction } from '@/store/modules/CartModule';
 
 @Component
 export default class ProductDetails extends Vue {
@@ -113,20 +122,26 @@ export default class ProductDetails extends Vue {
 
   private accountType: AccountType | null = null;
 
+  private isProductInCart = false;
+
   private mounted() {
     this.accountType = store.state.auth.accountType;
     this.fields = [
       { key: 'cechaLabel', label: 'Nazwa cechy' },
       { key: 'cechaValue', label: 'Wartość' },
     ];
+
+    store.dispatch(CartAction.IsProductInCart, this.$route.params.id).then(result => {
+      this.isProductInCart = result;
+    });
     this.loadProduct(this.$route.params.id);
     this.setViewTitle();
   }
 
   private addToCart() {
-    // TODO: after create cart
     this.$store.commit('addToCart', this.product);
-    console.log(store.state.cart.currentCart);
+    // eslint-disable-next-line no-alert
+    alert('Dodano produkt do koszyka');
   }
 
   private editProduct() {
