@@ -101,6 +101,7 @@ import { AccountType } from '@/models/User';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import store from '@/store';
+import CartModule from '@/store/modules/CartModule';
 
 @Component
 export default class ProductDetails extends Vue {
@@ -124,6 +125,8 @@ export default class ProductDetails extends Vue {
 
   private addToCart() {
     // TODO: after create cart
+    this.$store.commit('addToCart', this.product);
+    console.log(store.state.cart.currentCart);
   }
 
   private editProduct() {
@@ -171,7 +174,7 @@ export default class ProductDetails extends Vue {
       }).call(true);
 
       if (data.status === 201) {
-        this.loadProduct();
+        this.loadProduct(this.$route.params.id);
       } else {
         // eslint-disable-next-line no-alert
         alert('Blokowanie nie powiodło się');

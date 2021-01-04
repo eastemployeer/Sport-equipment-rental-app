@@ -4,13 +4,16 @@ import VuexPersistence from 'vuex-persist';
 
 import AuthModule, { AuthState } from '@/store/modules/AuthModule';
 
+import CartModule, { CartState } from './modules/CartModule';
+
 export interface RootState {
   auth: AuthState;
+  cart: CartState;
 }
 
 const vuexLocal = new VuexPersistence<RootState>({
   storage: window.localStorage,
-  modules: ['auth'],
+  modules: ['auth', 'cart'],
 });
 
 Vue.use(Vuex);
@@ -18,6 +21,7 @@ Vue.use(Vuex);
 export default new Vuex.Store<RootState>({
   modules: {
     auth: AuthModule,
+    cart: CartModule,
   },
   plugins: [vuexLocal.plugin],
 });

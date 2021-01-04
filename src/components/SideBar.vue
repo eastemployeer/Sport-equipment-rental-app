@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <span class="panelName">{{panelName}}</span>
+    <router-link :to="{name: 'ProductList'}" class="panelName">{{panelName}}</router-link>
     <span class="userName">{{userName}}</span>
     <span class="userEmail">{{userEmail}}</span>
     <div class="divider"/>
