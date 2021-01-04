@@ -3,6 +3,7 @@ import Router from 'vue-router';
 
 import store from '@/store';
 import Login from '@/views/auth/Login.vue';
+import Register from '@/views/auth/Register.vue';
 import MyCart from '@/views/clients/MyCart.vue';
 import ProductDetails from '@/views/products/Details.vue';
 import ProductList from '@/views/products/List.vue';
@@ -35,6 +36,14 @@ const router = new Router({
       path: '/cart',
       name: 'MyCart',
       component: MyCart,
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register,
+      meta: {
+        layout: 'auth',
+      },
     },
   ],
 });
