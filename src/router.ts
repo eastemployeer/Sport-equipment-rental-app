@@ -49,9 +49,9 @@ const router = new Router({
 });
 
 router.beforeEach((to, _from, next) => {
-  if (!store.state.auth.token && to.name !== 'Login') {
+  if (!store.state.auth.token && (to.name !== 'Login' && to.name !== 'Register')) {
     next({ name: 'Login' });
-  } else if (store.state.auth.token && to.name === 'Login') {
+  } else if (store.state.auth.token && (to.name === 'Login' || to.name === 'Register')) {
     next({ name: 'ProductList' });
   } else {
     next();

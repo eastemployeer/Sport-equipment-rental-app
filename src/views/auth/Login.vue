@@ -32,6 +32,8 @@
         v-else
         v-on:click="loginType = 'KLIENT'"
       >Kliknij tu by zalogować się jako klient</span>
+      <router-link :to="{name: 'Register'}"  class="changeTypeBtn">
+        Kliknij tu by się zarejestrować</router-link>
 
       <b-button
         v-on:click='login'
