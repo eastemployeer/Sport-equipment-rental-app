@@ -110,7 +110,7 @@ import { AccountType } from '@/models/User';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import store from '@/store';
-import CartModule, { CartAction } from '@/store/modules/CartModule';
+import { CartAction } from '@/store/modules/CartModule';
 
 @Component
 export default class ProductDetails extends Vue {
