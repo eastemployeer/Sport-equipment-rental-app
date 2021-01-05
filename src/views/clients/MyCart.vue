@@ -135,7 +135,7 @@ export default class MyCart extends Vue {
 
   private get priceForDay() {
     this.products.forEach(element => {
-      this.value += element.cenaWypozyczeniaDzien;
+      this.value += element.cenaWypozyczeniaDzien!;
     });
     return this.value;
   }
@@ -144,7 +144,7 @@ export default class MyCart extends Vue {
     let deposit = 0;
     let value = 0;
     this.products.forEach(element => {
-      value += element.wartoscSprzetu;
+      value += element.wartoscSprzetu!;
     });
     if (value <= 200) {
       deposit = 200;
