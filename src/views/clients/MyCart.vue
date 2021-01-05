@@ -16,23 +16,23 @@
             </div>
           </template>
 
-          <template #cell(cena_wypozyczenia_dzien)="data">
+          <template #cell(cenaWypozyczeniaDzien)="data">
             <div class="text-center">
               {{ data.value + " zł" }}
             </div>
           </template>
 
           <template #cell(cecha_1)="data">
-            {{ data.item.cecha_1_label ? data.item.cecha_1_label + ": " + data.item.cecha_1_value : "" }}
+            {{ data.item.cecha1Label ? data.item.cecha1Label + ": " + data.item.cecha1Value : "" }}
           </template>
           <template #cell(cecha_2)="data">
-            {{ data.item.cecha_2_label ? data.item.cecha_2_label + ": " + data.item.cecha_2_value : "" }}
+            {{ data.item.cecha2Label ? data.item.cecha2Label + ": " + data.item.cecha2Value : "" }}
           </template>
           <template #cell(cecha_3)="data">
-            {{ data.item.cecha_3_label ? data.item.cecha_3_label + ": " + data.item.cecha_3_value : "" }}
+            {{ data.item.cecha3Label ? data.item.cecha3Label + ": " + data.item.cecha3Value : "" }}
           </template>
           <template #cell(cecha_4)="data">
-            {{ data.item.cecha_4_label ? data.item.cecha_4_label + ": " + data.item.cecha_4_value : "" }}
+            {{ data.item.cecha4Label ? data.item.cecha4Label + ": " + data.item.cecha4Value : "" }}
           </template>
 
           <template #cell(id)="data">
@@ -109,7 +109,7 @@ export default class MyCart extends Vue {
 
   private isLoading = false;
 
-  private products: any[] = [];
+  private products: Product[] = [];
 
   private fields: any[] = [];
 
@@ -117,8 +117,8 @@ export default class MyCart extends Vue {
     this.setViewTitle();
     this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.fields = [
-      { key: 'rodzaj_sprzetu', label: 'Nazwa' },
-      { key: 'cena_wypozyczenia_dzien', label: 'Cena za dzień' },
+      { key: 'rodzajSprzetu.nazwa', label: 'Nazwa' },
+      { key: 'cenaWypozyczeniaDzien', label: 'Cena za dzień' },
       { key: 'cecha_1', label: 'Cecha' },
       { key: 'cecha_2', label: 'Cecha' },
       { key: 'cecha_3', label: 'Cecha' },
@@ -135,7 +135,7 @@ export default class MyCart extends Vue {
 
   private get priceForDay() {
     this.products.forEach(element => {
-      this.value += element.cena_wypozyczenia_dzien;
+      this.value += element.cenaWypozyczeniaDzien;
     });
     return this.value;
   }
@@ -144,7 +144,7 @@ export default class MyCart extends Vue {
     let deposit = 0;
     let value = 0;
     this.products.forEach(element => {
-      value += element.wartosc_sprzetu;
+      value += element.wartoscSprzetu;
     });
     if (value <= 200) {
       deposit = 200;
