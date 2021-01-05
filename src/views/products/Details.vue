@@ -1,5 +1,5 @@
 <template>
-  <div class="view">
+  <div class="viewPadding">
     <div class="infoSegment">
       <div class='column'>
         <div class="textInfoContainer">
@@ -140,7 +140,6 @@ export default class ProductDetails extends Vue {
 
   private addToCart() {
     this.$store.commit('addToCart', this.product);
-    // eslint-disable-next-line no-alert
     alert('Dodano produkt do koszyka');
   }
 
@@ -155,7 +154,6 @@ export default class ProductDetails extends Vue {
       if (data.status === 201) {
         this.$router.back();
       } else {
-        // eslint-disable-next-line no-alert
         alert('Usuwanie nie powiodło się');
       }
     } catch (error) {
@@ -191,7 +189,6 @@ export default class ProductDetails extends Vue {
       if (data.status === 201) {
         this.loadProduct(this.$route.params.id);
       } else {
-        // eslint-disable-next-line no-alert
         alert('Blokowanie nie powiodło się');
       }
     } catch (error) {
@@ -245,10 +242,6 @@ export default class ProductDetails extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.view {
-  padding: 46px 53px;
-}
-
 .infoSegment {
   display: flex;
   flex: 1;

@@ -3,7 +3,7 @@ import {
   Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
 
-import { Product } from '@/models/Product';
+import Product from '@/models/Product';
 
 // eslint-disable-next-line no-shadow
 export enum CartAction {

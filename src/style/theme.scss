@@ -25,7 +25,13 @@ html, body, #app {
 
 .view {
   height: 100%;
-  box-shadow: 0 0 50px rgba(16, 30, 115, 0.06)
+  box-shadow: 0 0 50px rgba(16, 30, 115, 0.06);
+}
+
+.viewPadding {
+  height: 100%;
+  padding: 46px 53px;
+  box-shadow: 0 0 50px rgba(16, 30, 115, 0.06);
 }
 
 // text info pseudo-component

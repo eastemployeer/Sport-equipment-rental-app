@@ -41,6 +41,7 @@ module.exports = {
     'global-require': 'off',
     'no-underscore-dangle': 'off',
     'class-methods-use-this': 'off',
+    'no-alert': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },

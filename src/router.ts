@@ -5,6 +5,7 @@ import store from '@/store';
 import Login from '@/views/auth/Login.vue';
 import Register from '@/views/auth/Register.vue';
 import MyCart from '@/views/clients/MyCart.vue';
+import ProductCreate from '@/views/products/Create.vue';
 import ProductDetails from '@/views/products/Details.vue';
 import ProductList from '@/views/products/List.vue';
 
@@ -26,6 +27,11 @@ const router = new Router({
       path: '/product',
       name: 'ProductList',
       component: ProductList,
+    },
+    {
+      path: '/product/create',
+      name: 'ProductCreate',
+      component: ProductCreate,
     },
     {
       path: '/product/:id',

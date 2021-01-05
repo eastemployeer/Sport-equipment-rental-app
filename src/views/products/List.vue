@@ -116,7 +116,7 @@ export default class ProductList extends Vue {
         title: 'Katalog sprzętów',
         show: true,
         text: 'Dodaj nowy sprzęt',
-        onPress: () => this.$router.push({ name: 'product-add' }),
+        onPress: () => this.$router.push({ name: 'ProductCreate' }),
       });
     } else if (store.state.auth.accountType === 'SERWISANT') {
       await EventBus.$emit('layout-view', { title: 'Katalog sprzętów wymagających przeglądu' });

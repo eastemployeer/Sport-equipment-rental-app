@@ -72,10 +72,11 @@ export default class Input extends Vue {
   display: flex;
   flex-direction: column;
   .label {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 22px;
-    color: #262626;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 16px;
+    color: #818E9B;
+    letter-spacing: 0.01em;
   }
   .input {
     box-sizing: border-box;
@@ -86,9 +87,12 @@ export default class Input extends Vue {
     border: 1px solid #D9D9D9;
     border-radius: 4px;
   }
+  .input::placeholder {
+      color: #bfbfbf;
+    }
   .counter {
     position: absolute;
-    top: 8px;
+    top: 28px;
     right: 8px;
     bottom: 8px;
     font-size: 14px;
