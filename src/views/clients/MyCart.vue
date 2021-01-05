@@ -35,9 +35,9 @@
             {{ data.item.cecha_4_label ? data.item.cecha_4_label + ": " + data.item.cecha_4_value : "" }}
           </template>
 
-          <template #cell(id)>
+          <template #cell(id)="data">
           <!-- router -->
-              <b-icon-trash  variant="danger" scale="1.5"/>
+              <b-icon-trash v-on:click="deleteItem(data.item)" variant="danger" scale="1.5"/>
           </template>
         </b-table>
       </div>
@@ -47,27 +47,27 @@
         <div class="form-group row">
           <div class="col-md-6">
             <div class="textInfoLabel">Suma koszyka</div>
-            <div class="textInfoValue">240 zł dziennie</div>
+            <div class="textInfoValue">{{priceForDay}} zł dziennie</div>
           </div>
           <div class="col-md-6">
             <div class="textInfoLabel">Kaucja</div>
-            <div class="textInfoValue">600 zł</div>
+            <div class="textInfoValue">{{deposit}} zł</div>
           </div>
         </div>
         <div class="form-group row">
           <div class="col-md-6">
             <div class="textInfoLabel">Data odebrania sprzętu</div>
-            <input class="textInfoValue form-control" disabled value="10-11-2020"/>
+            <input :value="dateToYYYYMMDD(takeDate)" @input="takeDate = $event.target.valueAsDate" class="textInfoValue form-control" type="date" placeholder="10-11-2020"/>
           </div>
           <div class="col-md-6">
             <div class="textInfoLabel">Data oddania sprzętu</div>
-            <input class="textInfoValue form-control" disabled value="15-11-2020"/>
+            <input type="date" :value="dateToYYYYMMDD(giveBackDate)" @input="giveBackDate = $event.target.valueAsDate" class="textInfoValue form-control" placeholder="15-11-2020"/>
           </div>
         </div>
         <div class="form-group row">
           <div class="col-md-6">
             <div class="textInfoLabel">Koszt całej rezerwacji bez kaucji</div>
-            <div class="textInfoValue">1200 zł</div>
+            <div class="textInfoValue">{{totalPrice}} zł</div>
           </div>
         </div>
         <div class="row">
@@ -82,23 +82,30 @@
         <p style="font-size: 14px;">Po dokonaniu rezerwacji prosimy o przelew na konto XXXXXXX z tytułem dzień wypożyczenia oraz Twoje nazwisko</p>
       </div>
     </div>
-
   </div>
 </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 
+import { Product } from '@/models/Product';
 import EventBus from '@/services/EventBus';
+import store from '@/store';
 
 @Component
 export default class MyCart extends Vue {
    private parentHeight = 0;
 
+   private takeDate : Date = new Date('2021-01-11T00:01:01Z');
+
+   private giveBackDate : Date = new Date('2021-01-12T00:01:01Z');
+
   private currentPage = 1;
 
   private totalRows = 0;
+
+  private value = 0;
 
   private isLoading = false;
 
@@ -121,25 +128,55 @@ export default class MyCart extends Vue {
     this.loadProducts();
   }
 
+  private dateToYYYYMMDD(d: Date) {
+    // alternative implementations in https://stackoverflow.com/q/23593052/1850609
+    return d && new Date(d.getTime() - (d.getTimezoneOffset() * 60 * 1000)).toISOString().split('T')[0];
+  }
+
+  private get priceForDay() {
+    this.products.forEach(element => {
+      this.value += element.cena_wypozyczenia_dzien;
+    });
+    return this.value;
+  }
+
+  private get deposit() {
+    let deposit = 0;
+    let value = 0;
+    this.products.forEach(element => {
+      value += element.wartosc_sprzetu;
+    });
+    if (value <= 200) {
+      deposit = 200;
+    } else if (value > 200 && value <= 500) {
+      deposit = 200;
+    } else {
+      deposit = 400;
+    }
+    return deposit;
+  }
+
+  private get totalPrice() {
+    let totalPrice = 0;
+    const difference = this.giveBackDate.getTime() - this.takeDate.getTime();
+    const days = Math.ceil(difference / (1000 * 3600 * 24));
+    totalPrice = this.value * days;
+
+    return totalPrice;
+  }
+
   private reserve() {
 
   }
 
+  private deleteItem(product: Product) {
+    this.$store.commit('removeFromCart', product);
+    this.loadProducts();
+    this.value = 0;
+  }
+
   private loadProducts() {
-    this.products = [{
-      rodzaj_sprzetu: 'buty narciarskie',
-      cena_wypozyczenia_dzien: '100',
-      cecha_1_label: 'rozmiar',
-      cecha_1_value: 'S',
-      cecha_2_label: 'marka',
-      cecha_2_value: 'salomon',
-      cecha_3_label: 'kolor',
-      cecha_3_value: 'czerwony',
-      cecha_4_label: 'poziom zaawansowania',
-      cecha_4_value: 'ekspert',
-      id: 22,
-    },
-    ];
+    this.products = store.state.cart.products;
   }
 
   private async setViewTitle() {

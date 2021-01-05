@@ -5,6 +5,7 @@ import {
 
 import { Product } from '@/models/Product';
 
+// eslint-disable-next-line no-shadow
 export enum CartAction {
   IsProductInCart = 'isProductInCart'
 }
@@ -25,5 +26,11 @@ export default class CartModule extends VuexModule<CartState> {
     @Action
     private async [CartAction.IsProductInCart](productId: number) {
       return this.products.some(product => product.id === productId);
+    }
+
+    @Mutation
+    private removeFromCart(data: Product) {
+      const index = this.products.findIndex(object => object.id === data.id);
+      this.products.splice(index, 1);
     }
 }

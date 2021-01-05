@@ -7,6 +7,7 @@ import {
   AuthService, LoginKlientRequest, LoginPracownikRequest, LoginResponse,
 } from '@/services/AuthService';
 
+// eslint-disable-next-line no-shadow
 export enum AuthAction {
   AttemptLoginKlient = 'attemptLoginKlient',
   AttemptLoginPracownik = 'attemptLoginPracownik',
