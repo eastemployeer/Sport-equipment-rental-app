@@ -1,6 +1,6 @@
 export interface IRodzaj {
   nazwa: string;
-  rodzajSezonu: string;
+  rodzajSezonu: string | null;
 }
 
 export interface IProduct {
@@ -52,21 +52,24 @@ export default class Product {
 
   wartoscSprzetu?: number;
 
-  constructor(data?: IProduct) {
+  constructor(data?: IProduct | any) {
     this.id = data?.id;
-    this.rodzajSprzetu = data?.rodzajSprzetu;
+    this.rodzajSprzetu = data?.rodzajSprzetu || data?.rodzaj_sprzetu ? {
+      nazwa: data?.rodzaj_sprzetu,
+      rodzajSezonu: null,
+    } : undefined;
     this.przeznaczenie = data?.przeznaczenie;
-    this.cenaWypozyczeniaDzien = data?.cenaWypozyczeniaDzien;
-    this.cecha1Label = data?.cecha1Label;
-    this.cecha1Value = data?.cecha1Value;
-    this.cecha2Label = data?.cecha2Label;
-    this.cecha2Value = data?.cecha2Value;
-    this.cecha3Label = data?.cecha3Label;
-    this.cecha3Value = data?.cecha3Value;
-    this.cecha4Label = data?.cecha4Label;
-    this.cecha4Value = data?.cecha4Value;
+    this.cenaWypozyczeniaDzien = data?.cenaWypozyczeniaDzien || data?.cena_wypozyczenia_dzien;
+    this.cecha1Label = data?.cecha1Label || data?.cecha_1_label;
+    this.cecha1Value = data?.cecha1Value || data?.cecha_1_value;
+    this.cecha2Label = data?.cecha2Label || data?.cecha_2_label;
+    this.cecha2Value = data?.cecha2Value || data?.cecha_2_value;
+    this.cecha3Label = data?.cecha3Label || data?.cecha_3_label;
+    this.cecha3Value = data?.cecha3Value || data?.cecha_3_value;
+    this.cecha4Label = data?.cecha4Label || data?.cecha_4_label;
+    this.cecha4Value = data?.cecha4Value || data?.cecha_4_value;
     this.blokada = data?.blokada;
     this.rocznik = data?.rocznik;
-    this.wartoscSprzetu = data?.wartoscSprzetu;
+    this.wartoscSprzetu = data?.wartoscSprzetu || data?.wartosc_sprzetu;
   }
 }

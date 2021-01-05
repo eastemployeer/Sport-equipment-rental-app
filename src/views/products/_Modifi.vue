@@ -6,7 +6,7 @@
           id="dropdown-1"
           :text="value.rodzajSprzetu ? value.rodzajSprzetu.nazwa : 'Rodzaj sprzętu'"
           variant="outline-dark"
-          :key="String(rodzaje.length +1 )"
+          :key="String(rodzaje.length)"
           class="m-md-2"
         >
           <b-dropdown-item
@@ -153,7 +153,6 @@ export default class ProductModify extends Vue {
   }
 
   private selectRodzaj(rodzaj: IRodzaj) {
-    console.log('rodzaj', rodzaj);
     this.value.rodzajSprzetu = rodzaj;
   }
 
@@ -165,9 +164,10 @@ export default class ProductModify extends Vue {
         rodzajSezonu: item.rodzaj_sezonu,
         nazwa: item.nazwa,
       }));
-      console.log('rodzaje', this.rodzaje);
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
+
+      throw error;
     }
   }
 }

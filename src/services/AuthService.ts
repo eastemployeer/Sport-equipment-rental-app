@@ -28,8 +28,6 @@ export class AuthService {
       },
     }).call(true);
 
-    console.log('res', res);
-
     const response: LoginResponse = {
       token: res.data.token,
       user: res.data.user,

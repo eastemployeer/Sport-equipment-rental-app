@@ -54,7 +54,7 @@ export default class AuthModule extends VuexModule<AuthState> {
           this.context.commit('handleLogin', response);
         }
       } catch (error) {
-        console.log('error', error);
+        console.error('error', error);
       }
     }
 

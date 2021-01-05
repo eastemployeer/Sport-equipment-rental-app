@@ -29,7 +29,6 @@ export default class ProductCreate extends Vue {
   }
 
   private async createProduct() {
-    console.log('test');
     try {
       const data = await new API('post', 'sprzet', {
         body: {
@@ -47,11 +46,11 @@ export default class ProductCreate extends Vue {
           rocznik: this.newProduct.rocznik,
           wartoscSprzetu: this.newProduct.wartoscSprzetu,
         },
-      }).call();
+      }).call(true);
 
       if (data.status === 400) {
         alert('Wprowadzono błędne dane');
-      } else if (data.id) {
+      } else if (data.status === 201) {
         this.$router.back();
         alert('Stworzono sprzęt');
       } else {
