@@ -52,6 +52,10 @@ export default class Product {
 
   wartoscSprzetu?: number;
 
+  opisKary?: string;
+
+  kara?: number;
+
   constructor(data?: IProduct | any) {
     this.id = data?.id;
     this.rodzajSprzetu = data?.rodzajSprzetu || data?.rodzaj_sprzetu ? {
@@ -71,6 +75,8 @@ export default class Product {
     this.blokada = data?.blokada;
     this.rocznik = data?.rocznik;
     this.wartoscSprzetu = data?.wartoscSprzetu || data?.wartosc_sprzetu;
+    this.kara = data?.kara;
+    this.opisKary = data?.opisKary || data?.opis_kary;
   }
 
   public getCechyArray() {
