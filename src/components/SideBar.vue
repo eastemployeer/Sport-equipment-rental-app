@@ -5,7 +5,7 @@
     <span class="userEmail">{{userEmail}}</span>
     <div class="divider"/>
 
-      <div style="cursor: pointer;" v-on:click="makeAction" class="button">
+      <div v-on:click="makeAction" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[0]"/>
         </div>
@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div style="cursor: pointer;" v-if="panelName != 'Panel pracownika'" class="button">
+      <div v-if="panelName != 'Panel pracownika'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[1]"/>
         </div>
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <router-link style="cursor: pointer;" :to="{name: 'ServiceList'}" tag="div" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
+      <router-link :to="{name: 'ServiceList'}" tag="div" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[2]"/>
         </div>
@@ -32,7 +32,7 @@
         </div>
       </router-link>
 
-      <div style="cursor: pointer;" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
+      <div v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[3]"/>
         </div>
@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div style="cursor: pointer;" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
+      <div v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[4]"/>
         </div>
@@ -210,7 +210,7 @@ export default class SideBar extends Vue {
 
 .buttons {
   display: flex;
-flex-direction: column;
+  flex-direction: column;
   margin-top: 14px;
 }
 
@@ -218,6 +218,7 @@ flex-direction: column;
   display: flex;
   flex-direction: row;
   margin: 10px;
+  cursor: pointer;
 }
 
 .buttonIcon {
