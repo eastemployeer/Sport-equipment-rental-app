@@ -5,20 +5,16 @@
     <span class="userEmail">{{userEmail}}</span>
     <div class="divider"/>
 
-     <div v-on:click='makeAction' class="buttons">
-      <div class="button btn1">
+      <div style="cursor: pointer;" v-on:click="makeAction" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[0]"/>
-
         </div>
         <div class="buttonText">
           {{button1Text}}
         </div>
       </div>
 
-      <div class="divider"/>
-
-      <div v-if="panelName != 'Panel pracownika'" class="button btn2">
+      <div style="cursor: pointer;" v-if="panelName != 'Panel pracownika'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[1]"/>
         </div>
@@ -27,16 +23,16 @@
         </div>
       </div>
 
-      <div v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button btn3">
+      <router-link style="cursor: pointer;" :to="{name: 'ServiceList'}" tag="div" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[2]"/>
         </div>
         <div class="buttonText">
           {{button3Text}}
         </div>
-      </div>
+      </router-link>
 
-      <div v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button btn4">
+      <div style="cursor: pointer;" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[3]"/>
         </div>
@@ -45,7 +41,7 @@
         </div>
       </div>
 
-      <div v-if="panelName === 'Panel klienta'" class="button btn5">
+      <div style="cursor: pointer;" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[4]"/>
         </div>
@@ -53,8 +49,6 @@
           {{button5Text}}
         </div>
       </div>
-
-    </div>
 
     <div id="logoutSegment">
       <div class="divider"/>
@@ -97,6 +91,10 @@ export default class SideBar extends Vue {
 
   private btnIcon : string[] = [];
 
+  private toServiceList() {
+    this.$router.push({ name: 'ServiceList' });
+  }
+
   private logout() {
     store.dispatch(AuthAction.Logout).then(() => {
       this.$router.replace({ name: 'Login' });
@@ -127,13 +125,15 @@ export default class SideBar extends Vue {
     } else if (this.panelName === 'Panel kierownika') {
       this.button1Text = 'Katalog sprzętów';
       this.button2Text = 'Lista pracowników';
-      this.button3Text = 'Lista wypożyczeń';
+      this.button3Text = 'Lista usług serwisowych';
       this.button4Text = 'Statystyki wypozyczalni';
+      this.button5Text = 'Lista wypożyczeń';
 
       this.btnIcon[0] = 'b-icon-book';
       this.btnIcon[1] = 'b-icon-person-circle';
       this.btnIcon[2] = 'b-icon-list';
       this.btnIcon[3] = 'b-icon-graph-up';
+      this.btnIcon[4] = 'b-icon-list';
     } else if (this.panelName === 'Panel pracownika') {
       this.button1Text = 'Lista wypożyczeń';
 

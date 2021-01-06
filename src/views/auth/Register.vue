@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import API from '@/services/API';
+
 export default {
   data() {
     return {
@@ -44,8 +46,27 @@ export default {
     };
   },
   methods: {
-    register() {
-
+    async register() {
+      if (this.values[4] === this.values[5]) {
+        try {
+          const data = await new API('post', 'klient', {
+            body: {
+              imie: this.values[0],
+              nazwisko: this.values[1],
+              email: this.values[3],
+              haslo: this.values[4],
+              telefon: this.values[2],
+            },
+          }).call();
+        } catch (error) {
+          // eslint-disable-next-line no-alert
+          alert('Podany użytkownik już istnieje');
+          console.error('error', error);
+        }
+      } else {
+        // eslint-disable-next-line no-alert
+        alert('Podane hasła się nie zgadzają!');
+      }
     },
   },
 };

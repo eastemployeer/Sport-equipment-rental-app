@@ -9,6 +9,7 @@ import ProductCreate from '@/views/products/Create.vue';
 import ProductDetails from '@/views/products/Details.vue';
 import ProductEdit from '@/views/products/Edit.vue';
 import ProductList from '@/views/products/List.vue';
+import ServiceList from '@/views/products/ServiceList.vue';
 
 Vue.use(Router);
 
@@ -43,6 +44,11 @@ const router = new Router({
       path: '/product/:id',
       name: 'ProductDetails',
       component: ProductDetails,
+    },
+    {
+      path: '/servicelist',
+      name: 'ServiceList',
+      component: ServiceList,
     },
     {
       path: '/cart',
