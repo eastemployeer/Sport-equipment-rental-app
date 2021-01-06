@@ -41,7 +41,11 @@
         </div>
       </div>
 
-      <div v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
+      <div
+        v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'"
+        class="button"
+        v-on:click="() => $router.push({name: 'RentalsList'})"
+      >
         <div class="buttonIcon">
            <component :is="btnIcon[4]"/>
         </div>

@@ -11,6 +11,7 @@ import ProductEdit from '@/views/products/Edit.vue';
 import ProductList from '@/views/products/List.vue';
 import ProductRepair from '@/views/products/Repair.vue';
 import ServiceList from '@/views/products/ServiceList.vue';
+import RentalsList from '@/views/rentals/List.vue';
 
 Vue.use(Router);
 
@@ -55,6 +56,11 @@ const router = new Router({
       path: '/servicelist',
       name: 'ServiceList',
       component: ServiceList,
+    },
+    {
+      path: '/rentals',
+      name: 'RentalsList',
+      component: RentalsList,
     },
     {
       path: '/cart',
