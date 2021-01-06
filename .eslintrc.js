@@ -20,7 +20,7 @@ module.exports = {
     'arrow-parens': ['error', 'as-needed'],
     'max-len': ['error', { code: 300 }],
     'no-plusplus': 'off',
-    'no-shadow': 'off',
+    'no-shadow': ['error', { allow: ['state'] }],
     '@typescript-eslint/no-shadow': ['error'],
     'prefer-destructuring': ['error', { VariableDeclarator: { object: true } }],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
