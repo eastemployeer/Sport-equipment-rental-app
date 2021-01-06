@@ -3,7 +3,7 @@
     <div class="infoSegment">
       <div class='column'>
         <div class="textInfoContainer">
-          <span class="textInfoLabel">Nazwa</span>
+          <span class="textInfoLabel">Rodzaj sprzetu</span>
           <span class="textInfoValue">{{ product.rodzajSprzetu.nazwa }}</span>
         </div>
         <div class="textInfoContainer" :style="{ marginTop: '23px' }">
@@ -50,14 +50,15 @@
       </div>
       <div v-if="accountType === 'SERWISANT'">
         <b-button
+          v-if="product.blokada === 'serwis'"
           v-on:click='serviceProduct'
           variant="primary"
         >Serwisuj</b-button>
         <b-button
-          v-on:click='blockProduct'
-          variant="danger"
+          v-on:click='changeBlockProduct'
+          :variant="product.blokada === 'dostepny' ? 'danger' : 'primary'"
           :style="{ marginLeft: '25px' }"
-        >Zablokuj</b-button>
+        >{{ product.blokada === 'dostepny' ? 'Zablokuj' : 'Odblokuj' }}</b-button>
       </div>
     </div>
     <div
@@ -157,10 +158,10 @@ export default class ProductDetails extends Vue {
   }
 
   private serviceProduct() {
-    this.$router.push({ name: 'ProductService', params: { id: String(this.product.id) } });
+    this.$router.push({ name: 'ProductRepair', params: { id: String(this.product.id) } });
   }
 
-  private async blockProduct() {
+  private async changeBlockProduct() {
     try {
       const data = await new API('post', `sprzet/${this.product.id}`, {
         body: {
@@ -177,12 +178,13 @@ export default class ProductDetails extends Vue {
           cena: this.product.cenaWypozyczeniaDzien,
           rocznik: this.product.rocznik,
           wartoscSprzetu: this.product.wartoscSprzetu,
-          blokada: 'Serwis',
+          blokada: this.product.blokada === 'dostepny' ? 'serwis' : 'dostepny',
         },
       }).call(true);
 
       if (data.status === 201) {
         this.loadProduct(this.$route.params.id);
+        alert('Zmiana blokady powiodła się');
       } else {
         alert('Blokowanie nie powiodło się');
       }

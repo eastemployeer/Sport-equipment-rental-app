@@ -9,6 +9,7 @@ import ProductCreate from '@/views/products/Create.vue';
 import ProductDetails from '@/views/products/Details.vue';
 import ProductEdit from '@/views/products/Edit.vue';
 import ProductList from '@/views/products/List.vue';
+import ProductRepair from '@/views/products/Repair.vue';
 
 Vue.use(Router);
 
@@ -33,6 +34,11 @@ const router = new Router({
       path: '/product/create',
       name: 'ProductCreate',
       component: ProductCreate,
+    },
+    {
+      path: '/product/repair',
+      name: 'ProductRepair',
+      component: ProductRepair,
     },
     {
       path: '/product/edit/:id',
