@@ -104,14 +104,14 @@ export default class ProductList extends Vue {
   private async loadRentals() {
     if (store.state.auth.accountType === 'KLIENT') {
       try {
-        const data = await new API('get', `wypozyczenie/klient/${store.state.auth.currentUser.id}`, {
+        const data = await new API('get', `wypozyczenie/klient/${this.$store.state.auth.currentUser.id}`, {
           query: {
             limit: 30,
             offset: (this.currentPage - 1) * 30,
           },
         }).call();
 
-        this.servalRentals = data.rows.map(row => new Rentals(row));
+        this.servalRentals = data.rows.map((row : any) => new Rentals(row));
         this.totalRows = data.totalRows;
         this.isLoading = false;
       } catch (error) {

@@ -5,7 +5,7 @@
     <span class="userEmail">{{userEmail}}</span>
     <div class="divider"/>
 
-      <div v-on:click="makeAction" class="button">
+      <div v-on:click="backToProductList" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[0]"/>
         </div>
@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div v-if="panelName != 'Panel pracownika'" class="button">
+      <div v-on:click="makeAction" v-if="panelName != 'Panel pracownika'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[1]"/>
         </div>
@@ -41,10 +41,9 @@
         </div>
       </div>
 
-      <div
-        v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'"
+      <router-link
+         :to="{name: 'RentalsList'}" tag="div" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'"
         class="button"
-        v-on:click="() => $router.push({name: 'RentalsList'})"
       >
         <div class="buttonIcon">
            <component :is="btnIcon[4]"/>
@@ -52,7 +51,7 @@
         <div class="buttonText">
           {{button5Text}}
         </div>
-      </div>
+      </router-link>
 
     <div id="logoutSegment">
       <div class="divider"/>
@@ -111,18 +110,22 @@ export default class SideBar extends Vue {
     }
   }
 
+  private backToProductList() {
+    if (this.panelName !== 'Panel pracownika') { this.$router.push({ name: 'ProductList' }); }
+  }
+
   private buttonsConfiguration() {
     // const DOMiconBtn1 = document.querySelector('.btn1-icon');
 
     if (this.panelName === 'Panel klienta') {
-      this.button1Text = 'Mój koszyk';
-      this.button2Text = 'Katalog sprzętów';
+      this.button1Text = 'Katalog sprzętów';
+      this.button2Text = 'Mój koszyk';
       this.button3Text = 'Lista usług serwisowych';
       this.button4Text = 'Serwisy moich sprzętów';
       this.button5Text = 'Moje wypożyczenia';
 
-      this.btnIcon[0] = 'b-icon-cart3';
-      this.btnIcon[1] = 'b-icon-book';
+      this.btnIcon[0] = 'b-icon-book';
+      this.btnIcon[1] = 'b-icon-cart3';
       this.btnIcon[2] = 'b-icon-list';
       this.btnIcon[3] = 'b-icon-tools';
       this.btnIcon[4] = 'b-icon-archive';
@@ -222,7 +225,12 @@ export default class SideBar extends Vue {
   display: flex;
   flex-direction: row;
   margin: 10px;
+  color: #2c3e50;
   cursor: pointer;
+}
+.button:hover {
+  text-decoration: underline;
+
 }
 
 .buttonIcon {

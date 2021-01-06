@@ -16,7 +16,7 @@
 
           <template #cell(szacowany_czas_wykonania)="data">
             <div class="text-center">
-              {{ data.item.szacowany_czas_wykonania + " dni" }}
+              {{ data.item.szacowany_czas_wykonania + " dni"}}
             </div>
           </template>
 
@@ -24,7 +24,7 @@
             {{ data.item.cena + " zł" }}
           </template>
           <template v-if="isManagerLogged" #cell(id)="data">
-            <b-icon-trash v-on:click="deleteItem(data.item)" variant="danger" style="margin-right: 40px; cursor: pointer;" scale="1.5"/>
+            <b-icon-trash v-on:click="deleteItem(data.item.id)" variant="danger" style="margin-right: 40px; cursor: pointer;" scale="1.5"/>
             <router-link :to="{ name: '/', params: { id: data.item.id } }">
               <b-icon-pencil scale="1.5"/>
             </router-link>
@@ -79,12 +79,32 @@ export default class ProductList extends Vue {
     this.checkLoggedAccount();
   }
 
-  private addNewService() {
+  private async addNewService() {
+    this.$router.push({ name: '/servicelist/edit' });
+    // TODO
+  /*  try {
+      const data = await new API('post', 'klient', {
+        body: {
 
+        },
+      }).call();
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert('Podany użytkownik już istnieje');
+      console.error('error', error);
+    } */
   }
 
-  private deleteItem(product: any[]) {
-
+  private async deleteItem(productId: any) {
+    // TODO
+    try {
+      const data = await new API('delete', `uslugaSerwisowa/${productId}`, {}).call();
+      this.loadProducts();
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert('Podany użytkownik już istnieje');
+      console.error('error', error);
+    }
   }
 
   private checkLoggedAccount() {
