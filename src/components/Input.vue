@@ -13,6 +13,7 @@
     />
     <input
       class="input"
+      v-else
       :type="inputType"
       :maxlength="max"
       :disabled="disabled"

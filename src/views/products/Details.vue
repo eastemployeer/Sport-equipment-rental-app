@@ -3,17 +3,17 @@
     <div class="infoSegment">
       <div class='column'>
         <div class="textInfoContainer">
-          <span class="textInfoLabel">Nazwa</span>
-          <span class="textInfoValue">{{ product.nazwa }}</span>
+          <span class="textInfoLabel">Rodzaj sprzetu</span>
+          <span class="textInfoValue">{{ product.rodzajSprzetu.nazwa }}</span>
         </div>
         <div class="textInfoContainer" :style="{ marginTop: '23px' }">
           <span class="textInfoLabel">Cena za dzień</span>
-          <span class="textInfoValue">{{ product.cena_wypozyczenia_dzien + ' zł'}}</span>
+          <span class="textInfoValue">{{ product.cenaWypozyczeniaDzien + ' zł'}}</span>
         </div>
         <div v-if="accountType !== 'KLIENT'" :style="{ marginBottom: '51px' }">
           <div class="textInfoContainer" :style="{ marginTop: '23px' }">
             <span class="textInfoLabel">Wartość sprzętu</span>
-            <span class="textInfoValue">{{ product.wartosc_sprzetu + ' zł'}}</span>
+            <span class="textInfoValue">{{ product.wartoscSprzetu + ' zł'}}</span>
           </div>
           <div class="textInfoContainer" :style="{ marginTop: '23px' }">
             <span class="textInfoLabel">Ilość wypożyczeń</span>
@@ -22,10 +22,6 @@
         </div>
       </div>
       <div class='column'>
-        <div class="textInfoContainer">
-          <span class="textInfoLabel">Rodzaj sprzętu</span>
-          <span class="textInfoValue">{{ product.rodzaj_sprzetu }}</span>
-        </div>
         <div class="textInfoContainer" :style="{ marginTop: '23px' }">
           <span class="textInfoLabel">Rocznik</span>
           <span class="textInfoValue">{{ product.rocznik }}</span>
@@ -54,14 +50,15 @@
       </div>
       <div v-if="accountType === 'SERWISANT'">
         <b-button
+          v-if="product.blokada === 'serwis'"
           v-on:click='serviceProduct'
           variant="primary"
         >Serwisuj</b-button>
         <b-button
-          v-on:click='blockProduct'
-          variant="danger"
+          v-on:click='changeBlockProduct'
+          :variant="product.blokada === 'dostepny' ? 'danger' : 'primary'"
           :style="{ marginLeft: '25px' }"
-        >Zablokuj</b-button>
+        >{{ product.blokada === 'dostepny' ? 'Zablokuj' : 'Odblokuj' }}</b-button>
       </div>
     </div>
     <div
@@ -86,7 +83,7 @@
         head-variant="light"
         id="table"
         :fields="fields"
-        :items="cechy"
+        :items="product.getCechyArray()"
       >
         <template #table-busy>
           <div class="text-center text-danger">
@@ -106,6 +103,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import Product from '@/models/Product';
 import { AccountType } from '@/models/User';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
@@ -114,9 +112,7 @@ import { CartAction } from '@/store/modules/CartModule';
 
 @Component
 export default class ProductDetails extends Vue {
-  private product: any = null;
-
-  private cechy: any = [];
+  private product: Product = new Product();
 
   private fields: any = [];
 
@@ -127,8 +123,8 @@ export default class ProductDetails extends Vue {
   private mounted() {
     this.accountType = store.state.auth.accountType;
     this.fields = [
-      { key: 'cechaLabel', label: 'Nazwa cechy' },
-      { key: 'cechaValue', label: 'Wartość' },
+      { key: 'label', label: 'Nazwa cechy' },
+      { key: 'value', label: 'Wartość' },
     ];
 
     store.dispatch(CartAction.IsProductInCart, this.$route.params.id).then(result => {
@@ -144,7 +140,7 @@ export default class ProductDetails extends Vue {
   }
 
   private editProduct() {
-    this.$router.push({ name: 'ProductEdit', params: { id: this.product.id } });
+    this.$router.push({ name: 'ProductEdit', params: { id: String(this.product.id) } });
   }
 
   private async removeProduct() {
@@ -162,32 +158,33 @@ export default class ProductDetails extends Vue {
   }
 
   private serviceProduct() {
-    this.$router.push({ name: 'ProductService', params: { id: this.product.id } });
+    this.$router.push({ name: 'ProductRepair', params: { id: String(this.product.id) } });
   }
 
-  private async blockProduct() {
+  private async changeBlockProduct() {
     try {
       const data = await new API('post', `sprzet/${this.product.id}`, {
         body: {
-          rodzajSprzetu: this.product.rodzaj_sprzetu,
+          rodzajSprzetu: this.product.rodzajSprzetu,
           przeznaczenie: this.product.przeznaczenie,
-          cecha_1_label: this.product.cecha_1_label,
-          cecha_1_value: this.product.cecha_1_value,
-          cecha_2_label: this.product.cecha_2_label,
-          cecha_2_value: this.product.cecha_2_value,
-          cecha_3_label: this.product.cecha_3_label,
-          cecha_3_value: this.product.cecha_3_value,
-          cecha_4_label: this.product.cecha_4_label,
-          cecha_4_value: this.product.cecha_4_value,
-          cena: this.product.cena_wypozyczenia_dzien,
+          cecha_1_label: this.product.cecha1Label,
+          cecha_1_value: this.product.cecha1Value,
+          cecha_2_label: this.product.cecha2Label,
+          cecha_2_value: this.product.cecha2Value,
+          cecha_3_label: this.product.cecha3Label,
+          cecha_3_value: this.product.cecha3Value,
+          cecha_4_label: this.product.cecha4Label,
+          cecha_4_value: this.product.cecha4Value,
+          cena: this.product.cenaWypozyczeniaDzien,
           rocznik: this.product.rocznik,
-          wartoscSprzetu: this.product.wartosc_sprzetu,
-          blokada: 'Serwis',
+          wartoscSprzetu: this.product.wartoscSprzetu,
+          blokada: this.product.blokada === 'dostepny' ? 'serwis' : 'dostepny',
         },
       }).call(true);
 
       if (data.status === 201) {
         this.loadProduct(this.$route.params.id);
+        alert('Zmiana blokady powiodła się');
       } else {
         alert('Blokowanie nie powiodło się');
       }
@@ -200,25 +197,7 @@ export default class ProductDetails extends Vue {
     try {
       const data = await new API('get', `sprzet/${id}`, {}).call();
 
-      this.product = data;
-      this.cechy = [
-        {
-          cechaLabel: data.cecha_1_label,
-          cechaValue: data.cecha_1_value,
-        },
-        {
-          cechaLabel: data.cecha_2_label,
-          cechaValue: data.cecha_2_value,
-        },
-        {
-          cechaLabel: data.cecha_3_label,
-          cechaValue: data.cecha_3_value,
-        },
-        {
-          cechaLabel: data.cecha_4_label,
-          cechaValue: data.cecha_4_value,
-        },
-      ];
+      this.product = new Product(data);
     } catch (error) {
       console.error('error', error);
     }

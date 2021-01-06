@@ -72,4 +72,25 @@ export default class Product {
     this.rocznik = data?.rocznik;
     this.wartoscSprzetu = data?.wartoscSprzetu || data?.wartosc_sprzetu;
   }
+
+  public getCechyArray() {
+    return [
+      {
+        label: this.cecha1Label,
+        value: this.cecha1Value,
+      },
+      {
+        label: this.cecha2Label,
+        value: this.cecha2Value,
+      },
+      {
+        label: this.cecha3Label,
+        value: this.cecha3Value,
+      },
+      {
+        label: this.cecha4Label,
+        value: this.cecha4Value,
+      },
+    ];
+  }
 }
