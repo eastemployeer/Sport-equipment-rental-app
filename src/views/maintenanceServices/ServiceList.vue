@@ -25,7 +25,7 @@
           </template>
           <template v-if="isManagerLogged" #cell(id)="data">
             <b-icon-trash v-on:click="deleteItem(data.item.id)" variant="danger" style="margin-right: 40px; cursor: pointer;" scale="1.5"/>
-            <router-link :to="{ name: '/', params: { id: data.item.id } }">
+            <router-link :to="{ name: 'EditService', params: { id: data.item.id } }">
               <b-icon-pencil scale="1.5"/>
             </router-link>
           </template>
@@ -80,19 +80,7 @@ export default class ProductList extends Vue {
   }
 
   private async addNewService() {
-    this.$router.push({ name: '/servicelist/edit' });
-    // TODO
-  /*  try {
-      const data = await new API('post', 'klient', {
-        body: {
-
-        },
-      }).call();
-    } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert('Podany użytkownik już istnieje');
-      console.error('error', error);
-    } */
+    this.$router.push({ name: 'CreateService' });
   }
 
   private async deleteItem(productId: any) {

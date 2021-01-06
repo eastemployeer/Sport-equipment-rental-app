@@ -5,12 +5,14 @@ import store from '@/store';
 import Login from '@/views/auth/Login.vue';
 import Register from '@/views/auth/Register.vue';
 import MyCart from '@/views/clients/MyCart.vue';
+import CreateService from '@/views/maintenanceServices/CreateService.vue';
+import EditService from '@/views/maintenanceServices/EditService.vue';
+import ServiceList from '@/views/maintenanceServices/ServiceList.vue';
 import ProductCreate from '@/views/products/Create.vue';
 import ProductDetails from '@/views/products/Details.vue';
 import ProductEdit from '@/views/products/Edit.vue';
 import ProductList from '@/views/products/List.vue';
 import ProductRepair from '@/views/products/Repair.vue';
-import ServiceList from '@/views/products/ServiceList.vue';
 import RentalsDetails from '@/views/rentals/Details.vue';
 import RentalsList from '@/views/rentals/List.vue';
 
@@ -57,6 +59,18 @@ const router = new Router({
       path: '/servicelist',
       name: 'ServiceList',
       component: ServiceList,
+    },
+    {
+      path: '/servicelist/:id',
+      name: 'EditService',
+      props: true,
+      component: EditService,
+    },
+    {
+      path: '/servicelist/create',
+      name: 'CreateService',
+      props: true,
+      component: CreateService,
     },
     {
       path: '/rentals',
