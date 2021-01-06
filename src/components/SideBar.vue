@@ -217,7 +217,7 @@ flex-direction: column;
 .button {
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  margin: 10px;
 }
 
 .buttonIcon {
