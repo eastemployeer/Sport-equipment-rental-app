@@ -90,16 +90,17 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 import Product from '@/models/Product';
+import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import store from '@/store';
 
 @Component
 export default class MyCart extends Vue {
-   private parentHeight = 0;
+  private parentHeight = 0;
 
-   private takeDate : Date = new Date('2021-01-11T00:01:01Z');
+  private takeDate : Date = new Date('2021-01-11T00:01:01Z');
 
-   private giveBackDate : Date = new Date('2021-01-12T00:01:01Z');
+  private giveBackDate : Date = new Date('2021-01-12T00:01:01Z');
 
   private currentPage = 1;
 
@@ -165,8 +166,31 @@ export default class MyCart extends Vue {
     return totalPrice;
   }
 
-  private reserve() {
+  private async reserve() {
+    try {
+      const data = await new API('post', 'wypozyczenie', {
+        body: {
+          klientId: store.state.auth.currentUser?.id,
+          poczatek: this.takeDate,
+          koniec: this.giveBackDate,
+          koszt: this.totalPrice,
+          naliczonaKaucja: this.deposit,
+          sprzetIds: this.products.map(product => product.id),
+        },
+      }).call(true);
 
+      if (data.status === 400) {
+        alert('Wprowadzono błędne dane');
+      } else if (data.status === 201) {
+        this.$store.commit('clearCart');
+        this.$router.back();
+        alert('Stworzono rezerwacje');
+      } else {
+        alert('Nieznany błąd');
+      }
+    } catch (error) {
+      console.error('error', error);
+    }
   }
 
   private deleteItem(product: Product) {

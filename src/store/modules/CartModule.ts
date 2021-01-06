@@ -33,4 +33,9 @@ export default class CartModule extends VuexModule<CartState> {
       const index = this.products.findIndex(object => object.id === data.id);
       this.products.splice(index, 1);
     }
+
+    @Mutation
+    private clearCart() {
+      this.products = [];
+    }
 }
