@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div v-on:click="makeAction" v-if="panelName != 'Panel pracownika'" class="button">
+      <div v-on:click="makeAction(2)" v-if="panelName !== 'Panel pracownika' && panelName !== 'Panel serwisanta'" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[1]"/>
         </div>
@@ -32,7 +32,7 @@
         </div>
       </router-link>
 
-      <div v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
+      <div v-if="panelName !== 'Panel pracownika'" v-on:click="makeAction(4)" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[3]"/>
         </div>
@@ -104,9 +104,15 @@ export default class SideBar extends Vue {
     });
   }
 
-  private makeAction() {
-    if (this.panelName === 'Panel klienta') {
-      this.$router.push({ name: 'MyCart' });
+  private makeAction(number: number) {
+    if (number === 2) {
+      if (this.panelName === 'Panel klienta') {
+        this.$router.push({ name: 'MyCart' });
+      }
+    } else if (number === 4) {
+      if (this.panelName !== 'Panel kierownika') {
+        this.$router.push({ name: 'ClientServiceList' });
+      }
     }
   }
 
@@ -147,10 +153,10 @@ export default class SideBar extends Vue {
       this.btnIcon[0] = 'b-icon-list';
     } else if (this.panelName === 'Panel serwisanta') {
       this.button1Text = 'Katalog sprzętów';
-      this.button2Text = 'Lista serwisów sprzętów klientów';
+      this.button4Text = 'Lista serwisów sprzętów klientów';
 
       this.btnIcon[0] = 'b-icon-book';
-      this.btnIcon[1] = 'b-icon-list';
+      this.btnIcon[3] = 'b-icon-list';
     }
   }
 

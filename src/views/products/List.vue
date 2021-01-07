@@ -41,7 +41,7 @@
       </b-table>
       <div class="buttons">
         <b-dropdown id="dropdown-1" :text="'Sezon ' + sezon">
-          <b-dropdown-item v-on:click="sezon = 'zimowy'">Sezon ziomowy</b-dropdown-item>
+          <b-dropdown-item v-on:click="sezon = 'zimowy'">Sezon zimowy</b-dropdown-item>
           <b-dropdown-item v-on:click="sezon = 'letni'">Sezon letni</b-dropdown-item>
         </b-dropdown>
         <div :style="{ flex: 1 }">

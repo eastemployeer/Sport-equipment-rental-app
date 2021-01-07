@@ -188,7 +188,7 @@ export default class RentalsDetails extends Vue {
   }
 
   private openEquipmentReturn() {
-    this.$router.push({ name: 'RentalEquipmentReturn', params: { id: this.rentals.id } });
+    this.$router.push({ name: 'RentalEquipmentReturn', params: { id: String(this.rentals.id) } });
   }
 }
 </script>

@@ -67,6 +67,7 @@ export default class ProductList extends Vue {
   private fields: any[] = [];
 
   private mounted() {
+    this.checkLoggedAccount();
     this.setViewTitle();
 
     this.fields = [
@@ -76,7 +77,6 @@ export default class ProductList extends Vue {
       { key: 'id', label: '' },
     ];
     this.loadProducts();
-    this.checkLoggedAccount();
   }
 
   private async addNewService() {

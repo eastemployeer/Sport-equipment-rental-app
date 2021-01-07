@@ -5,6 +5,7 @@ import store from '@/store';
 import Login from '@/views/auth/Login.vue';
 import Register from '@/views/auth/Register.vue';
 import MyCart from '@/views/clients/MyCart.vue';
+import ClientServiceList from '@/views/maintenanceServices/ClientServiceList.vue';
 import CreateService from '@/views/maintenanceServices/CreateService.vue';
 import EditService from '@/views/maintenanceServices/EditService.vue';
 import ServiceList from '@/views/maintenanceServices/ServiceList.vue';
@@ -71,6 +72,11 @@ const router = new Router({
       name: 'CreateService',
       props: true,
       component: CreateService,
+    },
+    {
+      path: '/myservicelist',
+      name: 'ClientServiceList',
+      component: ClientServiceList,
     },
     {
       path: '/rentals',
