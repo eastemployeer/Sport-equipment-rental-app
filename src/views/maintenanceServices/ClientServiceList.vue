@@ -26,7 +26,7 @@
           </template>
 
           <template #cell(id)="data">
-            <router-link :to="{ name: 'ClientServiceDetails', params: { id: data.item.id } }">
+            <router-link :to="{ name: 'ClientServiceListDetails', params: { id: data.item.id } }">
               <b-icon-arrow-right scale="1.5"/>
             </router-link>
           </template>
@@ -44,7 +44,7 @@
         </div>
       </div>
   </div>
-  <div class="btnStyle">
+  <div v-if="isServicemanLogged" class="btnStyle">
     <button type="button" style="margin-top: 20px;" class="btn btn-lg btn-primary" v-on:click="addNewService">Dodaj nowy serwis</button>
   </div>
 </div>
