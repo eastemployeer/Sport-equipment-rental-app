@@ -45,7 +45,7 @@
       </div>
   </div>
   <div v-if="isServicemanLogged" class="btnStyle">
-    <button type="button" style="margin-top: 20px;" class="btn btn-lg btn-primary" v-on:click="addNewService">Dodaj nowy serwis</button>
+    <button type="button" style="margin-top: 20px;" class="btn btn-primary" v-on:click="addNewService">Dodaj nowy serwis</button>
   </div>
 </div>
 </template>
@@ -88,7 +88,7 @@ export default class ClientServiceList extends Vue {
   }
 
   private addNewService() {
-    // TODO
+    this.$router.push({ name: 'ClientServiceCreate' });
   }
 
   private checkLoggedAccount() {

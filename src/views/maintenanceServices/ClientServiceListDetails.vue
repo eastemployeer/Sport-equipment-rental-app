@@ -34,7 +34,7 @@
       </div>
     </div>
     <div>
-      <button type="button" class="btn btn-lg btn-primary" v-if="isServicemanLogged === 1 && service.status !== 'Zakończony'" v-on:click="finishService">Zakończ serwis</button>
+      <button type="button" style="margin-top: 40px;" class="btn btn-primary" v-if="isServicemanLogged === 1 && service.status !== 'Zakończony'" v-on:click="finishService">Zakończ serwis</button>
     </div>
   </div>
 </template>
@@ -74,8 +74,24 @@ export default class ClientServiceListDetails extends Vue {
     } else { this.isServicemanLogged = 0; }
   }
 
-  private finishService() {
-
+  private async finishService() {
+    try {
+      const data = await new API('post', `wykonanaUslugaSerwisowa/${this.$route.params.id}`, {
+        body: {
+          status: 'Zakończony',
+        },
+      }).call(true);
+      if (data.status === 400) {
+        alert('Wystąpił błąd, sprawdź wprowadzone dane');
+      } else if (data.status === 201) {
+        this.$router.back();
+        alert('Zakończono serwis klienta');
+      } else {
+        alert('Nieznany błąd');
+      }
+    } catch (error) {
+      console.error('error', error);
+    }
   }
 
   private mounted() {
@@ -84,3 +100,8 @@ export default class ClientServiceListDetails extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.row {
+  margin-top: 20px;
+}
+</style>
