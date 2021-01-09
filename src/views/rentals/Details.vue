@@ -170,7 +170,6 @@ export default class RentalsDetails extends Vue {
   }
 
   private async changeStatus(newStatus: string) {
-    console.log('this.rentals', this.rentals);
     const data = await new API('post', `wypozyczenie/${this.rentals.id}`, {
       body: {
         status: newStatus,
