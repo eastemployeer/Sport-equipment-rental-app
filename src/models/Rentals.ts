@@ -101,7 +101,7 @@ export default class Rentals implements IRentals {
     let counter = 0;
 
     this.sprzety.forEach(sprzet => {
-      counter += sprzet.kara || 0;
+      counter += +sprzet.kara || 0;
     });
 
     return counter;
@@ -111,7 +111,7 @@ export default class Rentals implements IRentals {
     let description = '';
 
     this.sprzety.forEach(sprzet => {
-      if (sprzet.opisKary) { description += `${sprzet.rodzajSprzetu.nazwa} - ${sprzet.opisKary}\n`; }
+      if (sprzet.opisKary) { description += `${sprzet.rodzajSprzetu.nazwa} - ${sprzet.opisKary}&#13;&#10;`; }
     });
 
     if (description === '') { return 'brak'; }

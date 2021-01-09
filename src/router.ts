@@ -21,6 +21,7 @@ import ProductList from '@/views/products/List.vue';
 import ProductRepair from '@/views/products/Repair.vue';
 import RentalsDetails from '@/views/rentals/Details.vue';
 import RentalsList from '@/views/rentals/List.vue';
+import RentalEquipmentReturn from '@/views/rentals/RentalEquipmentReturn.vue';
 
 Vue.use(Router);
 
@@ -112,6 +113,11 @@ const router = new Router({
       path: '/rentals',
       name: 'RentalsList',
       component: RentalsList,
+    },
+    {
+      path: '/rentals/equipmentreturn/:id',
+      name: 'RentalEquipmentReturn',
+      component: RentalEquipmentReturn,
     },
     {
       path: '/rentals/:id',

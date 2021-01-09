@@ -17,23 +17,23 @@
         </div>
       </template>
 
-      <template #cell(cenaWypozyczeniaDzien)="data">
-        <div class="text-center">
-          {{ data.value + " zł" }}
-        </div>
+      <template #cell(kara)="data">
+        <Input
+          v-model="rentals.sprzety[data.index].kara"
+          placeholder="0"
+          inputType="number"
+          @input="(newData) => onPenaltyInput(data.index, newData.target.value)"
+          :max="11"
+        />
       </template>
 
-      <template #cell(cecha_1)="data">
-        {{ data.item.cecha1Label ? data.item.cecha1Label + ": " + data.item.cecha1Value : "" }}
-      </template>
-      <template #cell(cecha_2)="data">
-        {{ data.item.cecha2Label ? data.item.cecha2Label + ": " + data.item.cecha2Value : "" }}
-      </template>
-      <template #cell(cecha_3)="data">
-        {{ data.item.cecha3Label ? data.item.cecha3Label + ": " + data.item.cecha3Value : "" }}
-      </template>
-      <template #cell(cecha_4)="data">
-        {{ data.item.cecha4Label ? data.item.cecha4Label + ": " + data.item.cecha4Value : "" }}
+      <template #cell(opisKary)="data">
+        <Input
+          v-model="data.item.opisKary"
+          placeholder="Opis"
+          @input="(newData) => onDescInput(data.index, newData.target.value)"
+          :max="500"
+        />
       </template>
 
       <template #cell(id)="data">
@@ -53,7 +53,7 @@
           <div class="textInfoValue">{{rentals.formatedPoczatek }}</div>
         </div>
         <div class="form-group">
-          <div class="textInfoLabel">Koszt całej rezerwacji bez kaucji</div>
+          <div class="textInfoLabel">Koszt całej rezerwacji bez kaucji i kar</div>
           <div class="textInfoValue">{{rentals.totalPrice}} zł</div>
         </div>
       </div>
@@ -73,6 +73,10 @@
       </div>
       <div class="column">
         <div class="form-group">
+          <div class="textInfoLabel">Klient</div>
+          <div class="textInfoValue">{{ currentUser.imie + ' ' + currentUser.nazwisko }}</div>
+        </div>
+        <div class="form-group">
           <div class="textInfoLabel">Naliczona kara</div>
           <div class="textInfoValue">{{rentals.calculateFinancialPenalty()}} zł</div>
         </div>
@@ -81,19 +85,18 @@
           <div class="textInfoValue" v-html="rentals.getFormatedPenaltyDescription()" :style="{whiteSpace: 'pre-line'}"></div>
         </div>
       </div>
-      <div class="column" v-if="accountType !== 'KLIENT'">
-        <div class="form-group">
-          <div class="textInfoLabel">Klient</div>
-          <div class="textInfoValue">{{ currentUser.imie + ' ' + currentUser.nazwisko }}</div>
-        </div>
+      <div class="column">
+        <b-alert show variant="primary">
+          <h4 class="alert-heading">Nakładanie kar</h4>
+          <p style="font-size: 14px;">Jeśli nie nałożono kary na dany produkt zostaw pole wartości kary i jej opisu puste</p>
+        </b-alert>
       </div>
     </div>
     <b-button
-      v-if="showButton && accountType === 'PRACOWNIK'"
-      v-on:click='onButtonClick'
+      v-on:click='updateRentals'
       variant="primary"
       :style="{ marginTop: '5px', marginLeft: '15px' }"
-    >{{getButtonText()}}</b-button>
+    >Pobrano opłaty i zwrócono sprzęt</b-button>
   </div>
 </template>
 
@@ -101,40 +104,43 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 import Rentals from '@/models/Rentals';
-import { AccountType, User } from '@/models/User';
+import { User } from '@/models/User';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
-import store from '@/store';
 
 @Component
-export default class RentalsDetails extends Vue {
+export default class RentalEquipmentReturn extends Vue {
   private rentals: Rentals = new Rentals();
 
   private fields: any = [];
 
+  private descriptionPenalty = '';
+
+  private calculatedPenalty = 0;
+
   private isLoading = true;
-
-  private showButton = true;
-
-  private accountType: AccountType | null = null;
 
   private currentUser: User | null = null;
 
   private mounted() {
-    this.accountType = store.state.auth.accountType;
-    this.currentUser = store.state.auth.currentUser;
+    this.currentUser = this.$store.state.auth.currentUser;
     this.fields = [
       { key: 'rodzajSprzetu.nazwa', label: 'Nazwa sprzetu' },
-      { key: 'cenaWypozyczeniaDzien', label: 'Cena za dzień' },
-      { key: 'cecha_1', label: 'Cecha' },
-      { key: 'cecha_2', label: 'Cecha' },
-      { key: 'cecha_3', label: 'Cecha' },
-      { key: 'cecha_4', label: 'Cecha' },
+      { key: 'kara', label: 'Kara' },
+      { key: 'opisKary', label: 'Opis uszkodzenia' },
       { key: 'id', label: '' },
     ];
 
     this.setViewTitle();
     this.loadRentals(this.$route.params.id);
+  }
+
+  private onPenaltyInput(index: number, data: any) {
+    this.rentals.sprzety[index].kara = data;
+  }
+
+  private onDescInput(index: number, data: any) {
+    this.rentals.sprzety[index].opisKary = data;
   }
 
   private async loadRentals(id: any) {
@@ -151,43 +157,24 @@ export default class RentalsDetails extends Vue {
   }
 
   private async setViewTitle() {
-    await EventBus.$emit('layout-view', { title: 'Szczegóły wypożyczenia' });
+    await EventBus.$emit('layout-view', { title: 'Szczegóły wypożyczenia - proces zwracania sprzętu' });
   }
 
-  private getButtonText() {
-    if (this.rentals.status === 'Rezerwacja (nowa)') return 'Sprzęt został odłożony';
-    if (this.rentals.status === 'Rezerwacja') return 'Pobrano opłate i wydano sprzęt';
-    if (this.rentals.status === 'W trakcie wypożyczenia') return 'Zwrot sprzętu';
-    if (this.rentals.status === 'Zakończony') this.showButton = false;
-
-    return '';
-  }
-
-  private onButtonClick() {
-    if (this.rentals.status === 'Rezerwacja (nowa)') this.changeStatus('Rezerwacja');
-    else if (this.rentals.status === 'Rezerwacja') this.changeStatus('W trakcie wypożyczenia');
-    else if (this.rentals.status === 'W trakcie wypożyczenia') this.openEquipmentReturn();
-  }
-
-  private async changeStatus(newStatus: string) {
+  private async updateRentals() {
     console.log('this.rentals', this.rentals);
     const data = await new API('post', `wypozyczenie/${this.rentals.id}`, {
       body: {
-        status: newStatus,
+        status: 'Zakończony',
         sprzety: this.rentals.sprzety,
       },
     }).call(true);
 
     if (data.status === 201) {
-      this.loadRentals(this.$route.params.id);
-      alert('Zaktualizowano status');
+      this.$router.back();
+      alert('Zaktualizowano wypożyczenie');
     } else {
       alert('Nieznany błąd');
     }
-  }
-
-  private openEquipmentReturn() {
-    this.$router.push({ name: 'RentalEquipmentReturn', params: { id: String(this.rentals.id) } });
   }
 }
 </script>
@@ -211,8 +198,5 @@ export default class RentalsDetails extends Vue {
   justify-content: center;
   width: 500px;
   margin: 51px 0;
-}
-
-#table {
 }
 </style>
