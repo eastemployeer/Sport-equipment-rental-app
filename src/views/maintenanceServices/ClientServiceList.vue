@@ -109,7 +109,7 @@ export default class ClientServiceList extends Vue {
         const data = await new API('get', `wykonanaUslugaSerwisowa/klient/${this.$store.state.auth.currentUser.id}`, {
           query: {
             limit: 10,
-            offset: (this.currentPage - 1) * 30,
+            offset: (this.currentPage - 1) * 10,
           },
         }).call();
 
@@ -124,7 +124,7 @@ export default class ClientServiceList extends Vue {
         const data = await new API('get', 'wykonanaUslugaSerwisowa', {
           query: {
             limit: 20,
-            offset: (this.currentPage - 1) * 30,
+            offset: (this.currentPage - 1) * 20,
           },
         }).call();
 

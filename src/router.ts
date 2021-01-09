@@ -5,6 +5,9 @@ import store from '@/store';
 import Login from '@/views/auth/Login.vue';
 import Register from '@/views/auth/Register.vue';
 import MyCart from '@/views/clients/MyCart.vue';
+import CreateEmployee from '@/views/employees/CreateEmployee.vue';
+import EditEmployee from '@/views/employees/EditEmployee.vue';
+import EmployeesList from '@/views/employees/EmployeesList.vue';
 import ClientServiceCreate from '@/views/maintenanceServices/ClientServiceCreate.vue';
 import ClientServiceList from '@/views/maintenanceServices/ClientServiceList.vue';
 import ClientServiceListDetails from '@/views/maintenanceServices/ClientServiceListDetails.vue';
@@ -89,6 +92,21 @@ const router = new Router({
       path: '/myservicelist/:id',
       name: 'ClientServiceListDetails',
       component: ClientServiceListDetails,
+    },
+    {
+      path: '/employees',
+      name: 'EmployeesList',
+      component: EmployeesList,
+    },
+    {
+      path: '/employees/create',
+      name: 'CreateEmployee',
+      component: CreateEmployee,
+    },
+    {
+      path: '/employees/:id',
+      name: 'EditEmployee',
+      component: EditEmployee,
     },
     {
       path: '/rentals',

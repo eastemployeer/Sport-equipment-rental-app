@@ -108,6 +108,8 @@ export default class SideBar extends Vue {
     if (number === 2) {
       if (this.panelName === 'Panel klienta') {
         this.$router.push({ name: 'MyCart' });
+      } else if (this.panelName === 'Panel kierownika') {
+        this.$router.push({ name: 'EmployeesList' });
       }
     } else if (number === 4) {
       if (this.panelName !== 'Panel kierownika') {

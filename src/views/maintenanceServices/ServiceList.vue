@@ -43,7 +43,7 @@
       </p>
   </div>
   <div v-else class="col-md-6" style="margin-top: 30px;">
-    <button type="button" class="btn btn-lg btn-primary" v-on:click="addNewService">Dodaj nową usługę serwisową</button>
+    <button type="button" class="btn btn-primary" v-on:click="addNewService">Dodaj nową usługę serwisową</button>
   </div>
 </div>
 </template>
