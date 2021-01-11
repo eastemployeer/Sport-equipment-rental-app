@@ -1,5 +1,7 @@
 <template>
-  <EmployeeModify v-model="employee" :buttonOnClick="addNewEmployee" />
+  <div>
+    <EmployeeModify v-model="employee" :buttonOnClick="addNewEmployee" />
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
