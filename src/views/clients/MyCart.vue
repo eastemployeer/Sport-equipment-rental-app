@@ -1,10 +1,9 @@
 <template>
 <div class="container">
-  <div class="view list text-center" ref="table">
+  <div class="view list text-center">
       <div class="list-table">
         <b-table sticky-header hover head-variant="light"
           id="my-table"
-          :style="{ maxHeight: parentHeight - 16 - 38 + 'px' }"
           :fields="fields"
           :items="products"
           :busy="isLoading"
@@ -96,8 +95,6 @@ import store from '@/store';
 
 @Component
 export default class MyCart extends Vue {
-  private parentHeight = 0;
-
   private takeDate : Date = new Date('2021-01-11T00:01:01Z');
 
   private giveBackDate : Date = new Date('2021-01-12T00:01:01Z');
@@ -116,7 +113,6 @@ export default class MyCart extends Vue {
 
   private mounted() {
     this.setViewTitle();
-    this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.fields = [
       { key: 'rodzajSprzetu.nazwa', label: 'Nazwa' },
       { key: 'cenaWypozyczeniaDzien', label: 'Cena za dzień' },
@@ -182,7 +178,7 @@ export default class MyCart extends Vue {
         alert('Wprowadzono błędne dane');
       } else if (data.status === 201) {
         this.$store.commit('clearCart');
-        this.$router.back();
+        this.$router.replace({ name: 'RentalsList' });
         alert('Stworzono rezerwacje');
       } else {
         alert('Nieznany błąd');
