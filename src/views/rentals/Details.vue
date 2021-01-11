@@ -84,7 +84,7 @@
       <div class="column" v-if="accountType !== 'KLIENT'">
         <div class="form-group">
           <div class="textInfoLabel">Klient</div>
-          <div class="textInfoValue">{{ currentUser.imie + ' ' + currentUser.nazwisko }}</div>
+          <div class="textInfoValue">{{ rentals.imie + ' ' + rentals.nazwisko }}</div>
         </div>
       </div>
     </div>
