@@ -1,8 +1,8 @@
 <template>
-<div class="container">
   <div class="view list text-center" ref="table">
       <div class="list-table">
         <b-table sticky-header hover head-variant="light"
+          :style="{ maxHeight: parentHeight - 130 + 'px' }"
           :fields="fields"
           :items="services"
           :busy="isLoading"
@@ -42,12 +42,11 @@
             />
           </div>
         </div>
-      </div>
+    </div>
+    <div v-if="isServicemanLogged" class="btnStyle">
+      <button type="button" style="margin-top: 20px;" class="btn btn-primary" v-on:click="addNewService">Dodaj nowy serwis</button>
+    </div>
   </div>
-  <div v-if="isServicemanLogged" class="btnStyle">
-    <button type="button" style="margin-top: 20px;" class="btn btn-primary" v-on:click="addNewService">Dodaj nowy serwis</button>
-  </div>
-</div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
@@ -57,6 +56,8 @@ import EventBus from '@/services/EventBus';
 
 @Component
 export default class ClientServiceList extends Vue {
+  private parentHeight = 0;
+
   private isServicemanLogged = 0;
 
   private currentPage = 1;
@@ -77,6 +78,8 @@ export default class ClientServiceList extends Vue {
   private mounted() {
     this.checkLoggedAccount();
     this.setViewTitle();
+    this.parentHeight = (this.$refs.table as any).offsetHeight;
+    console.log('this.parentHeight', this.parentHeight);
     this.fields = [
       { key: 'nazwa', label: 'Nazwa usługi' },
       { key: 'cena', label: 'Cena' },
