@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="box">
-      <h2 class="text-center" style="margin-top: 50px; margin-bottom: 0;">Wypożyczalnia</h2>
-      <h4 class="text-center" style="margin-top: 10px;">Rejestracja</h4>
+    <div class="box mx-auto">
+      <h2 style="margin-top: 50px; margin-bottom: 0;">Wypożyczalnia</h2>
+      <h4 style="margin-top: 10px;">Rejestracja</h4>
       <div class="smallContainer">
         <div class="col-md-6 inputContainer">
           <div class="form-group" v-for="(labelVal, index) in labelVals" :key="labelVal">
@@ -12,14 +12,14 @@
         </div>
 
         <div class="col-md-6 inputContainer">
-          <div class="form-group" v-for="labelVal in labelVals1" :key="labelVal">
+          <div class="form-group" v-for="(labelVal,index) in labelVals1" :key="labelVal">
             <label :for="labelVal" class="textLabel">{{labelVal}}</label>
             <input v-model="values[index+3]" type="text" :id="labelVal" class="form-control" :placeholder="labelVal"/>
           </div>
         </div>
       </div>
-      <div class="text-center" style="margin-top: 61px;">
-          <button type="button" class="btn btn-lg btn-primary" v-on:click="register">Zarejestruj się</button>
+      <div>
+          <button type="button" class="btn btn-primary" v-on:click="register">Zarejestruj się</button>
       </div>
 
     </div>
@@ -74,7 +74,6 @@ export default {
 <style scoped lang="scss">
 .container {
   display: flex;
-  justify-content: center;
   width: 100%;
 }
 h2 {
@@ -99,6 +98,8 @@ letter-spacing: 0.2px;
 .smallContainer {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  width: 100%;
 }
 .inputContainer {
   display: flex;
@@ -108,6 +109,7 @@ letter-spacing: 0.2px;
 .box {
 display: flex;
 flex-direction: column;
+align-items: center;
 width: 910px;
 height: 627px;
 background: #D7E0FF;
