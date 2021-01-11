@@ -1,8 +1,8 @@
 <template>
-  <div class="view list text-center" ref="table">
+<div class="container">
+    <div class="view list text-center"  ref="table">
       <div class="list-table">
         <b-table sticky-header hover head-variant="light"
-          :style="{ maxHeight: parentHeight - 16 - 38 + 'px' }"
           :fields="fields"
           :items="products"
           :busy="isLoading"
@@ -33,18 +33,19 @@
           </template>
         </b-table>
       </div>
-    <div v-if="!isManagerLogged" class="box">
-      <strong class="textH">Serwis</strong>
-        <p class="text">
-          Usługi realizujemy na miejscu.
-          Proszę przyjść ze swoim sprzętem do serwisowni wypożyczalni w godzinach pracy.
-          Przyjmiemy go od razu
-        </p>
     </div>
-    <div v-else class="col-md-6" style="margin-top: 30px;">
-      <button type="button" class="btn btn-primary" v-on:click="addNewService">Dodaj nową usługę serwisową</button>
-    </div>
+  <div v-if="!isManagerLogged" class="box">
+    <strong class="textH">Serwis</strong>
+      <p class="text">
+        Usługi realizujemy na miejscu.
+        Proszę przyjść ze swoim sprzętem do serwisowni wypożyczalni w godzinach pracy.
+        Przyjmiemy go od razu
+      </p>
   </div>
+  <div v-else class="col-md-6" style="margin-top: 30px;">
+    <button type="button" class="btn btn-primary" v-on:click="addNewService">Dodaj nową usługę serwisową</button>
+  </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -54,9 +55,7 @@ import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 
 @Component
-export default class ProductList extends Vue {
-  private parentHeight = 0;
-
+export default class ServiceList extends Vue {
   private currentPage = 1;
 
   private isManagerLogged = 0;
@@ -70,9 +69,6 @@ export default class ProductList extends Vue {
   private mounted() {
     this.checkLoggedAccount();
     this.setViewTitle();
-    this.parentHeight = (this.$refs.table as any).offsetHeight;
-    console.log('test');
-    console.log('this.parentHeight', (this.$refs.table as any).offsetHeight);
 
     this.fields = [
       { key: 'nazwa', label: 'Nazwa usługi' },
@@ -134,7 +130,7 @@ export default class ProductList extends Vue {
 .container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  max-height: 70%;
 }
 .box {
 box-sizing: border-box;
