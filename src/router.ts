@@ -39,6 +39,7 @@ const router = new Router({
     },
     {
       path: '/product',
+      alias: '/',
       name: 'ProductList',
       component: ProductList,
     },
