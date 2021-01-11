@@ -93,7 +93,7 @@ export default class ProductList extends Vue {
   }
 
   private mounted() {
-    if (store.state.auth.accountType) {
+    if (store.state.auth.accountType === 'PRACOWNIK') {
       this.$router.replace({ name: 'RentalsList' });
     }
 
