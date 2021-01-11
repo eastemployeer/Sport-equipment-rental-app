@@ -1,8 +1,8 @@
 <template>
+<div class="container">
   <div class="view list text-center" ref="table">
       <div class="list-table">
         <b-table sticky-header hover head-variant="light"
-          :style="{ maxHeight: parentHeight - 80 + 'px' }"
           :fields="fields"
           :items="services"
           :busy="isLoading"
@@ -32,13 +32,9 @@
           </template>
         </b-table>
         <div class="buttons">
-          <div v-if="isServicemanLogged" class="btnStyle">
-            <button type="button" class="btn btn-primary" :style="{ marginLeft: '207px' }" v-on:click="addNewService">Dodaj nowy serwis</button>
-          </div>
           <div :style="{ flex: 1 }">
             <b-pagination
               v-model="currentPage"
-              :style="{marginLeft: '-207px'}"
               :total-rows="totalRows"
               :per-page="30"
               align="center"
@@ -46,8 +42,12 @@
             />
           </div>
         </div>
-    </div>
+      </div>
   </div>
+  <div v-if="isServicemanLogged" class="btnStyle">
+    <button type="button" style="margin-top: 20px;" class="btn btn-primary" v-on:click="addNewService">Dodaj nowy serwis</button>
+  </div>
+</div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
@@ -57,8 +57,6 @@ import EventBus from '@/services/EventBus';
 
 @Component
 export default class ClientServiceList extends Vue {
-  private parentHeight = 0;
-
   private isServicemanLogged = 0;
 
   private currentPage = 1;
@@ -79,8 +77,6 @@ export default class ClientServiceList extends Vue {
   private mounted() {
     this.checkLoggedAccount();
     this.setViewTitle();
-    this.parentHeight = (this.$refs.table as any).offsetHeight;
-    console.log('this.parentHeight', this.parentHeight);
     this.fields = [
       { key: 'nazwa', label: 'Nazwa usługi' },
       { key: 'cena', label: 'Cena' },
@@ -145,13 +141,7 @@ export default class ClientServiceList extends Vue {
 </script>
 <style lang="scss" scoped>
 .btnStyle {
-  font-size: 16px;
-  line-height: 24px;
-}
-
-.buttons {
-  display: flex;
-  flex-direction: row;
-  height: 38px;
+font-size: 16px;
+line-height: 24px;
 }
 </style>
