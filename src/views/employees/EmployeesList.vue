@@ -3,6 +3,7 @@
   <div class="view list text-center" ref="table">
       <div class="list-table">
         <b-table sticky-header hover head-variant="light"
+          :style="{ maxHeight: '500px' }"
           :fields="fields"
           :items="employees"
           :busy="isLoading"
