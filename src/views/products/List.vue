@@ -93,8 +93,11 @@ export default class ProductList extends Vue {
   }
 
   private mounted() {
-    this.setViewTitle();
+    if (store.state.auth.accountType) {
+      this.$router.replace({ name: 'RentalsList' });
+    }
 
+    this.setViewTitle();
     this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.fields = [
       { key: 'rodzaj_sprzetu', label: 'Nazwa' },
