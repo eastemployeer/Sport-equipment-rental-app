@@ -60,7 +60,7 @@ export default {
           }).call();
         } catch (error) {
           // eslint-disable-next-line no-alert
-          alert('Podany użytkownik już istnieje');
+          alert('Podany użytkownik już istnieje!');
           console.error('error', error);
         }
       } else {
