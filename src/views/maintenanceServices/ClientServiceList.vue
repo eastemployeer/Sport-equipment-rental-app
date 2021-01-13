@@ -1,8 +1,15 @@
 <template>
-<div class="container">
-  <div class="view list text-center" ref="table">
+<div
+  v-bind:class="{
+    container: $store.state.auth.accountType === 'KLIENT',
+    view: $store.state.auth.accountType !== 'KLIENT',
+  }"
+  ref="table"
+>
+  <div class="list text-center">
       <div class="list-table">
         <b-table sticky-header hover head-variant="light"
+          :style="{ maxHeight: $store.state.auth.accountType === 'KLIENT' ? undefined : parentHeight - 80 + 'px' }"
           :fields="fields"
           :items="services"
           :busy="isLoading"
@@ -32,9 +39,13 @@
           </template>
         </b-table>
         <div class="buttons">
+          <div v-if="isServicemanLogged" class="btnStyle">
+            <button type="button" :style="{ marginLeft: '207px' }" class="btn btn-primary" v-on:click="addNewService">Dodaj nowy serwis</button>
+          </div>
           <div :style="{ flex: 1 }">
             <b-pagination
               v-model="currentPage"
+              :style="{marginLeft: '-320px'}"
               :total-rows="totalRows"
               :per-page="30"
               align="center"
@@ -43,9 +54,6 @@
           </div>
         </div>
       </div>
-  </div>
-  <div v-if="isServicemanLogged" class="btnStyle">
-    <button type="button" style="margin-top: 20px;" class="btn btn-primary" v-on:click="addNewService">Dodaj nowy serwis</button>
   </div>
 </div>
 </template>
@@ -76,6 +84,7 @@ export default class ClientServiceList extends Vue {
 
   private mounted() {
     this.checkLoggedAccount();
+    this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.setViewTitle();
     this.fields = [
       { key: 'nazwa', label: 'Nazwa usługi' },
