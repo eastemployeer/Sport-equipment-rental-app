@@ -67,6 +67,8 @@ import EventBus from '@/services/EventBus';
 export default class ClientServiceList extends Vue {
   private isServicemanLogged = 0;
 
+  private parentHeight = 0;
+
   private currentPage = 1;
 
   private totalRows = 0;
