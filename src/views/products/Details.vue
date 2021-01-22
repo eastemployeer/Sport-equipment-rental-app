@@ -165,7 +165,7 @@ export default class ProductDetails extends Vue {
     try {
       const data = await new API('post', `sprzet/${this.product.id}`, {
         body: {
-          rodzajSprzetu: this.product.rodzajSprzetu,
+          rodzajSprzetu: this.product.rodzajSprzetu?.nazwa,
           przeznaczenie: this.product.przeznaczenie,
           cecha_1_label: this.product.cecha1Label,
           cecha_1_value: this.product.cecha1Value,
