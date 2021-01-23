@@ -127,57 +127,21 @@ export default class ProductList extends Vue {
   }
 
   private async loadProducts() {
-    if (store.state.auth.accountType === 'KLIENT') {
-      try {
-        const data = await new API('get', 'sprzet', {
-          query: {
-            limit: 30,
-            offset: (this.currentPage - 1) * 30,
-            sezon: this.sezon,
-            blokada: 'dostepny',
-          },
-        }).call();
+    try {
+      const data = await new API('get', 'sprzet', {
+        query: {
+          limit: 30,
+          offset: (this.currentPage - 1) * 30,
+          sezon: this.sezon,
+          accountType: store.state.auth.accountType,
+        },
+      }).call();
 
-        this.products = data.rows;
-        this.totalRows = data.totalRows;
-        this.isLoading = false;
-      } catch (error) {
-        console.error('error', error);
-      }
-    } else if (store.state.auth.accountType === 'SERWISANT') {
-      try {
-        const data = await new API('get', 'sprzet', {
-          query: {
-            limit: 30,
-            offset: (this.currentPage - 1) * 30,
-            sezon: this.sezon,
-          },
-        }).call();
-
-        // TODO!!!!!!
-
-        this.products = data.rows;
-        this.totalRows = data.totalRows;
-        this.isLoading = false;
-      } catch (error) {
-        console.error('error', error);
-      }
-    } else if (store.state.auth.accountType === 'KIEROWNIK') {
-      try {
-        const data = await new API('get', 'sprzet', {
-          query: {
-            limit: 30,
-            offset: (this.currentPage - 1) * 30,
-            sezon: this.sezon,
-          },
-        }).call();
-
-        this.products = data.rows;
-        this.totalRows = data.totalRows;
-        this.isLoading = false;
-      } catch (error) {
-        console.error('error', error);
-      }
+      this.products = data.rows;
+      this.totalRows = data.totalRows;
+      this.isLoading = false;
+    } catch (error) {
+      console.error('error', error);
     }
   }
 }
