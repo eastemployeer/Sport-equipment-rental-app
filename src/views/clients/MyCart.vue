@@ -166,8 +166,8 @@ export default class MyCart extends Vue {
       const data = await new API('post', 'wypozyczenie', {
         body: {
           klientId: store.state.auth.currentUser?.id,
-          poczatek: this.takeDate,
-          koniec: this.giveBackDate,
+          poczatek: this.dateToYYYYMMDD(this.takeDate),
+          koniec: this.dateToYYYYMMDD(this.giveBackDate),
           koszt: this.totalPrice,
           naliczonaKaucja: this.deposit,
           sprzetIds: this.products.map(product => product.id),
