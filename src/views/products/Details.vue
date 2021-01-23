@@ -3,7 +3,7 @@
     <div class="infoSegment">
       <div class='column'>
         <div class="textInfoContainer">
-          <span class="textInfoLabel">Rodzaj sprzetu</span>
+          <span class="textInfoLabel">Nazwa</span>
           <span class="textInfoValue">{{ product.rodzajSprzetu.nazwa }}</span>
         </div>
         <div class="textInfoContainer" :style="{ marginTop: '23px' }">
@@ -17,11 +17,15 @@
           </div>
           <div class="textInfoContainer" :style="{ marginTop: '23px' }">
             <span class="textInfoLabel">Ilość wypożyczeń</span>
-            <span class="textInfoValue">{{ '???'}}</span>
+            <span class="textInfoValue">{{product.iloscWypozyczen}}</span>
           </div>
         </div>
       </div>
       <div class='column'>
+        <div class="textInfoContainer">
+          <span class="textInfoLabel">Rodzaj sprzętu</span>
+          <span class="textInfoValue">{{ product.rodzajSprzetu.rodzajSezonu }}</span>
+        </div>
         <div class="textInfoContainer" :style="{ marginTop: '23px' }">
           <span class="textInfoLabel">Rocznik</span>
           <span class="textInfoValue">{{ product.rocznik }}</span>
@@ -33,7 +37,7 @@
           </div>
           <div class="textInfoContainer" :style="{ marginTop: '23px' }">
             <span class="textInfoLabel">Ilość napraw</span>
-            <span class="textInfoValue">{{ '???'}}</span>
+            <span class="textInfoValue">{{ product.iloscNapraw}}</span>
           </div>
         </div>
       </div>
@@ -92,9 +96,9 @@
           </div>
         </template>
       </b-table>
-      <div class="textInfoContainer column" :style="{ marginLeft: '46px' }">
+      <div v-if="accountType !== 'KLIENT'" class="textInfoContainer column" :style="{ marginLeft: '46px' }">
         <span class="textInfoLabel">Opis napraw</span>
-        <span class="textInfoValue">{{ "opis bla bla bla bla " }}</span>
+        <span style="white-space: pre;" class="textInfoValue">{{product.opisNapraw}}</span>
       </div>
     </div>
   </div>

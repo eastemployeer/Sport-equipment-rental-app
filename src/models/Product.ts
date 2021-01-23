@@ -19,6 +19,9 @@ export interface IProduct {
   blokada: string;
   rocznik: string;
   wartoscSprzetu: number;
+  iloscWypozyczen: number;
+  iloscNapraw: number;
+  opisNapraw: string;
 }
 
 export default class Product {
@@ -56,11 +59,17 @@ export default class Product {
 
   kara?: number;
 
+  iloscNapraw?: number;
+
+  iloscWypozyczen?: number;
+
+  opisNapraw?: number;
+
   constructor(data?: IProduct | any) {
     this.id = data?.id;
-    this.rodzajSprzetu = data?.rodzajSprzetu || data?.rodzaj_sprzetu ? {
-      nazwa: data?.rodzaj_sprzetu,
-      rodzajSezonu: null,
+    this.rodzajSprzetu = (data?.rodzajSprzetu || data?.rodzaj_sprzetu) && (data?.rodzajSprzetu || data?.rodzaj_sprzetu) ? {
+      nazwa: data?.rodzaj_sprzetu || data?.rodzajSprzetu,
+      rodzajSezonu: data?.rodzaj_sezonu || data?.rodzajSezonu,
     } : undefined;
     this.przeznaczenie = data?.przeznaczenie;
     this.cenaWypozyczeniaDzien = data?.cenaWypozyczeniaDzien || data?.cena_wypozyczenia_dzien;
@@ -77,6 +86,9 @@ export default class Product {
     this.wartoscSprzetu = data?.wartoscSprzetu || data?.wartosc_sprzetu;
     this.kara = data?.kara;
     this.opisKary = data?.opisKary || data?.opis_kary;
+    this.opisNapraw = data?.opisNapraw || data?.opis_napraw;
+    this.iloscNapraw = data?.iloscNapraw || data?.ilosc_napraw;
+    this.iloscWypozyczen = data?.iloscWypozyczen || data?.ilosc_wypozyczen;
   }
 
   public getCechyArray() {

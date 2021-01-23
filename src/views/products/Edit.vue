@@ -56,6 +56,7 @@ export default class ProductEdit extends Vue {
           cena: this.product.cenaWypozyczeniaDzien,
           rocznik: this.product.rocznik,
           wartoscSprzetu: this.product.wartoscSprzetu,
+          blokada: this.product.blokada,
         },
       }).call(true);
 

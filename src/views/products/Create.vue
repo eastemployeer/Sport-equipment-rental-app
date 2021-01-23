@@ -45,6 +45,7 @@ export default class ProductCreate extends Vue {
           cena: this.newProduct.cenaWypozyczeniaDzien,
           rocznik: this.newProduct.rocznik,
           wartoscSprzetu: this.newProduct.wartoscSprzetu,
+          blokada: this.newProduct.blokada,
         },
       }).call(true);
 
