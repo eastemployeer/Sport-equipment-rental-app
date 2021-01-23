@@ -5,7 +5,7 @@
     <span class="userEmail">{{userEmail}}</span>
     <div class="divider"/>
 
-      <div v-on:click="backToProductList" class="button">
+      <div v-on:click="goToProductList" class="button">
         <div class="buttonIcon">
            <component :is="btnIcon[0]"/>
         </div>
@@ -118,13 +118,11 @@ export default class SideBar extends Vue {
     }
   }
 
-  private backToProductList() {
-    if (this.panelName !== 'Panel pracownika') { this.$router.push({ name: 'ProductList' }); }
+  private goToProductList() {
+    this.$router.push({ name: 'ProductList' });
   }
 
   private buttonsConfiguration() {
-    // const DOMiconBtn1 = document.querySelector('.btn1-icon');
-
     if (this.panelName === 'Panel klienta') {
       this.button1Text = 'Katalog sprzętów';
       this.button2Text = 'Mój koszyk';
@@ -141,7 +139,7 @@ export default class SideBar extends Vue {
       this.button1Text = 'Katalog sprzętów';
       this.button2Text = 'Lista pracowników';
       this.button3Text = 'Lista usług serwisowych';
-      this.button4Text = 'Statystyki wypozyczalni';
+      this.button4Text = 'Statystyki wypozyczalni (wkrótce)';
       this.button5Text = 'Lista wypożyczeń';
 
       this.btnIcon[0] = 'b-icon-book';
