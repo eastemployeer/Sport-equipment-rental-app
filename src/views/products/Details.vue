@@ -67,7 +67,7 @@
     </div>
     <div
       class="button"
-      v-if="accountType === 'KLIENT'"
+      v-if="accountType === 'KLIENT' && product.blokada === 'dostepny'"
       :style="{ marginTop: '5px' }"
     >
       <b-button
@@ -81,6 +81,7 @@
         variant="outline-secondary"
       >Produkt jest już w koszyku</b-button>
     </div>
+    <div v-else :style="{ marginTop: '25px' }"/>
     <div class="infoSegment">
       <b-table
         hover
