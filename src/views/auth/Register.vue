@@ -57,7 +57,13 @@ export default {
               haslo: this.values[4],
               telefon: this.values[2],
             },
-          }).call();
+          }).call(true);
+          if (data.status === 201) {
+            alert('Rejestracja się powiodła!');
+            this.$router.back();
+          } else {
+            alert('Rejestracja się nie powiodła!');
+          }
         } catch (error) {
           // eslint-disable-next-line no-alert
           alert('Podany użytkownik już istnieje!');

@@ -16,7 +16,7 @@
         </div>
         <div class="textInfoContainer" :style="{ marginTop: '23px' }">
           <span class="textInfoLabel">Ilość wypożyczeń</span>
-          <span class="textInfoValue">{{ '???'}}</span>
+          <span class="textInfoValue">{{product.iloscWypozyczen}}</span>
         </div>
       </div>
       <div class='column'>
@@ -30,7 +30,7 @@
         </div>
         <div class="textInfoContainer" :style="{ marginTop: '23px' }">
           <span class="textInfoLabel">Ilość napraw</span>
-          <span class="textInfoValue">{{ '???'}}</span>
+          <span class="textInfoValue">{{ product.iloscNapraw}}</span>
         </div>
       </div>
     </div>
