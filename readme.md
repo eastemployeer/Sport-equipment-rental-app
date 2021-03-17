@@ -25,7 +25,7 @@ Coding was preceded by whole design process of every view for application, UML d
 
 ### Detailed documentation
 We have also provided detailed documentation which shows entire design proccess, all the functionalities, UML diagrams etc.
-* Docs
+* [Docs](https://github.com/eastemployeer/Sport-equipment-rental-app/blob/main/docs.pdf)
 
 ### Mock-ups
 Our page was first designed using [Figma](https://www.figma.com/) and based on them, created in Vue.js
