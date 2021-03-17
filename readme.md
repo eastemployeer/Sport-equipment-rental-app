@@ -21,6 +21,7 @@ Coding was preceded by whole design process of every view for application, UML d
 * [Bootstrap-vue](https://bootstrap-vue.org/)
 * [Vue.js](https://vuejs.org/)
 * [TypeScript](https://www.typescriptlang.org/)
+* [Axios](https://github.com/axios/axios)
 * [Baza MySQL](https://www.mysql.com/)
 
 ### Detailed documentation
