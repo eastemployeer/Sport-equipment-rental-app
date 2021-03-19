@@ -5,54 +5,16 @@
     <span class="userEmail">{{userEmail}}</span>
     <div class="divider"/>
 
-      <div v-on:click="goToProductList" class="button">
+    <div v-for="(icon, index) in btnIcon" :key="icon">
+      <div v-on:click="makeAction(index)" class="button">
         <div class="buttonIcon">
-           <component :is="btnIcon[0]"/>
+           <component :is="btnIcon[index]"/>
         </div>
         <div class="buttonText">
-          {{button1Text}}
+          {{buttonText[index]}}
         </div>
       </div>
-
-      <div v-on:click="makeAction(2)" v-if="panelName !== 'Panel pracownika' && panelName !== 'Panel serwisanta'" class="button">
-        <div class="buttonIcon">
-           <component :is="btnIcon[1]"/>
-        </div>
-        <div class="buttonText">
-          {{button2Text}}
-        </div>
-      </div>
-
-      <router-link :to="{name: 'ServiceList'}" tag="div" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'" class="button">
-        <div class="buttonIcon">
-           <component :is="btnIcon[2]"/>
-        </div>
-        <div class="buttonText">
-          {{button3Text}}
-        </div>
-      </router-link>
-
-      <div v-if="panelName !== 'Panel pracownika'" v-on:click="makeAction(4)" class="button">
-        <div class="buttonIcon">
-           <component :is="btnIcon[3]"/>
-        </div>
-        <div class="buttonText">
-          {{button4Text}}
-        </div>
-      </div>
-
-      <router-link
-         :to="{name: 'RentalsList'}" tag="div" v-if="panelName === 'Panel kierownika' || panelName === 'Panel klienta'"
-        class="button"
-      >
-        <div class="buttonIcon">
-           <component :is="btnIcon[4]"/>
-        </div>
-        <div class="buttonText">
-          {{button5Text}}
-        </div>
-      </router-link>
-
+    </div>
     <div id="logoutSegment">
       <div class="divider"/>
       <b-button pill variant="outline-secondary" id="logoutButton" v-on:click="logout">
@@ -75,22 +37,13 @@ import { AuthAction } from '@/store/modules/AuthModule';
 
 @Component
 export default class SideBar extends Vue {
-  // docelowo wynik zapytania
- private userName = 'Adam Kowalski';
+  private userName = 'Adam Kowalski';
 
   private userEmail = '';
 
   private panelName = 'Panel klienta';
 
-  private button1Text = '';
-
-  private button2Text ='';
-
-  private button3Text= '';
-
-  private button4Text = '';
-
-  private button5Text = '';
+  private buttonText : string[] = [];
 
   private btnIcon : string[] = [];
 
@@ -105,17 +58,45 @@ export default class SideBar extends Vue {
   }
 
   private makeAction(number: number) {
-    if (number === 2) {
+    if (number === 0) {
+      this.goToProductList();
+    } else if (number === 1) {
       if (this.panelName === 'Panel klienta') {
-        this.$router.push({ name: 'MyCart' });
+        this.goToMyCart();
       } else if (this.panelName === 'Panel kierownika') {
-        this.$router.push({ name: 'EmployeesList' });
+        this.goToEmployeesList();
+      } else if (this.panelName === 'Panel serwisanta') {
+        this.goToMyServiceList();
       }
-    } else if (number === 4) {
+    } else if (number === 2) {
+      this.goToServiceList();
+    } else if (number === 3) {
       if (this.panelName !== 'Panel kierownika') {
-        this.$router.push({ name: 'ClientServiceList' });
+        this.goToMyServiceList();
       }
+    } else {
+      this.goToRentalsList();
     }
+  }
+
+  private goToRentalsList() {
+    this.$router.push({ name: 'RentalsList' });
+  }
+
+  private goToMyCart() {
+    this.$router.push({ name: 'MyCart' });
+  }
+
+  private goToEmployeesList() {
+    this.$router.push({ name: 'EmployeesList' });
+  }
+
+  private goToServiceList() {
+    this.$router.push({ name: 'ServiceList' });
+  }
+
+  private goToMyServiceList() {
+    this.$router.push({ name: 'ClientServiceList' });
   }
 
   private goToProductList() {
@@ -124,11 +105,11 @@ export default class SideBar extends Vue {
 
   private buttonsConfiguration() {
     if (this.panelName === 'Panel klienta') {
-      this.button1Text = 'Katalog sprzętów';
-      this.button2Text = 'Mój koszyk';
-      this.button3Text = 'Lista usług serwisowych';
-      this.button4Text = 'Serwisy moich sprzętów';
-      this.button5Text = 'Moje wypożyczenia';
+      this.buttonText[0] = 'Katalog sprzętów';
+      this.buttonText[1] = 'Mój koszyk';
+      this.buttonText[2] = 'Lista usług serwisowych';
+      this.buttonText[3] = 'Serwisy moich sprzętów';
+      this.buttonText[4] = 'Moje wypożyczenia';
 
       this.btnIcon[0] = 'b-icon-book';
       this.btnIcon[1] = 'b-icon-cart3';
@@ -136,11 +117,11 @@ export default class SideBar extends Vue {
       this.btnIcon[3] = 'b-icon-tools';
       this.btnIcon[4] = 'b-icon-archive';
     } else if (this.panelName === 'Panel kierownika') {
-      this.button1Text = 'Katalog sprzętów';
-      this.button2Text = 'Lista pracowników';
-      this.button3Text = 'Lista usług serwisowych';
-      this.button4Text = 'Statystyki wypozyczalni (wkrótce)';
-      this.button5Text = 'Lista wypożyczeń';
+      this.buttonText[0] = 'Katalog sprzętów';
+      this.buttonText[1] = 'Lista pracowników';
+      this.buttonText[2] = 'Lista usług serwisowych';
+      this.buttonText[3] = 'Statystyki wypozyczalni (wkrótce)';
+      this.buttonText[4] = 'Lista wypożyczeń';
 
       this.btnIcon[0] = 'b-icon-book';
       this.btnIcon[1] = 'b-icon-person-circle';
@@ -148,15 +129,15 @@ export default class SideBar extends Vue {
       this.btnIcon[3] = 'b-icon-graph-up';
       this.btnIcon[4] = 'b-icon-list';
     } else if (this.panelName === 'Panel pracownika') {
-      this.button1Text = 'Lista wypożyczeń';
+      this.buttonText[0] = 'Lista wypożyczeń';
 
       this.btnIcon[0] = 'b-icon-list';
     } else if (this.panelName === 'Panel serwisanta') {
-      this.button1Text = 'Katalog sprzętów';
-      this.button4Text = 'Lista serwisów sprzętów klientów';
+      this.buttonText[0] = 'Katalog sprzętów';
+      this.buttonText[1] = 'Lista serwisów sprzętów klientów';
 
       this.btnIcon[0] = 'b-icon-book';
-      this.btnIcon[3] = 'b-icon-list';
+      this.btnIcon[1] = 'b-icon-list';
     }
   }
 
